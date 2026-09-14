@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { LINES, REACTIONS, SAVE_MSGS, THANKS, fillName } from "./data";
+import { REACTIONS, SAVE_MSGS, THANKS, fillName, linesForMood } from "./data";
 import { loadState, markOpenedToday, saveState } from "./storage";
 
 const timers = () => ({});
@@ -71,11 +71,11 @@ export default function useBud() {
 
   const nameOrFriend = (s) => (s.name || "").trim() || "friend";
 
-  const pool = useCallback((s) => LINES.filter((l) => l.m === s.mood), []);
+  const pool = useCallback((s) => linesForMood(s.mood), []);
   const todayLine = useCallback((s) => {
     const p = pool(s);
     const day = Math.floor(Date.now() / 864e5);
-    return p[(day + s.extra) % p.length].t;
+    return p[(day + s.extra) % p.length];
   }, [pool]);
 
   const hello = useCallback(() => {

@@ -37,31 +37,15 @@ export const POT_SHAPES = {
   },
 };
 
-export const LINES = [
-  { t: "Take it one day at a time.", m: "Tired" },
-  { t: "One step back, is also part of the dance", m: "Tender" },
-  { t: "you are allowed to rest", m: "Tired" },
-  { t: "small is still growing", m: "Hopeful" },
-  { t: "your pace is the right pace", m: "Calm" },
-  { t: "today can be quiet", m: "Calm" },
-  { t: "let it be enough", m: "Tired" },
-  { t: "you are doing plenty", m: "Tender" },
-  { t: "soft things last longer", m: "Tender" },
-  { t: "nothing blooms all year", m: "Hopeful" },
-  { t: "you can begin again at noon", m: "Brave" },
-  { t: "be gentle, you're new here too", m: "Brave" },
-  { t: "the light finds you either way", m: "Hopeful" },
-  { t: "one small brave thing counts", m: "Brave" },
-  { t: "breathe, then decide", m: "Calm" },
-  { t: "something here is already enough", m: "Grateful" },
-  { t: "notice one good, ordinary thing", m: "Grateful" },
-  { t: "thank yourself for showing up", m: "Grateful" },
-  { t: "the list can wait a minute", m: "Restless" },
-  { t: "you don't have to solve it today", m: "Restless" },
-  { t: "put your feet down, you're here", m: "Restless" },
-];
+// 1000 affirmations, pooled from a user-supplied set of 5 tone categories
+// and split evenly (shuffled, fixed seed) across the app's 7 moods below —
+// the source categories were about voice/tone, not these target moods, so
+// there was no clean 1:1 mapping to preserve.
+import AFFIRMATIONS from "./affirmations.json";
 
 export const MOODS = ["Calm", "Tender", "Brave", "Tired", "Hopeful", "Grateful", "Restless"];
+
+export const linesForMood = (mood) => AFFIRMATIONS[mood] || AFFIRMATIONS[MOODS[0]];
 
 export const THANKS = [
   "Thank you — I needed that.",
