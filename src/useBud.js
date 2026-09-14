@@ -48,9 +48,9 @@ export default function useBud() {
       medReady: null,
     });
     setReady(true);
-    if (loaded.onboarded) {
-      t.current.initHello = setTimeout(() => setState((s) => ({ ...s, greet: true, greetN: s.greetN + 1 })), 400);
-    }
+    // The initial greeting is timed to the launch splash instead of firing
+    // here directly — see App.jsx, which calls hello() once the splash (or
+    // its skip) clears, so it doesn't fire and expire behind the overlay.
   }, []);
 
   // Persist the durable slice whenever it changes (skip transient UI fields).

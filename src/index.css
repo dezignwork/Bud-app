@@ -67,3 +67,9 @@ button { font: inherit; }
   26% { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* Launch splash — see src/screens/Splash.jsx */
+@keyframes spDot  { 0%{opacity:0;transform:scale(.25)} 62%{opacity:1;transform:scale(1.09)} 100%{opacity:1;transform:scale(1)} }
+@keyframes spLeaf { 0%{opacity:0;transform:scale(.15) rotate(-34deg)} 70%{opacity:1;transform:scale(1.05) rotate(3deg)} 100%{opacity:1;transform:scale(1) rotate(0deg)} }
+@keyframes spOut  { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.07)} }
+@keyframes spOutFade { 0%{opacity:1} 100%{opacity:0} }

@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import { THEMES } from "./data";
 import useBud from "./useBud";
 import Onboarding from "./screens/Onboarding";
@@ -6,14 +7,51 @@ import Grove from "./screens/Grove";
 import Journal from "./screens/Journal";
 import Mood from "./screens/Mood";
 import Meditation from "./screens/Meditation";
+import Splash from "./screens/Splash";
 import TabBar from "./components/TabBar";
 
 export default function App() {
   const bud = useBud();
-  const { ready, state, goScreen } = bud;
+  const { ready, state, goScreen, hello } = bud;
+
+  // ?skipSplash bypasses the launch animation — for design work and tests.
+  const skipSplash = useMemo(() => {
+    try {
+      return new URLSearchParams(window.location.search).has("skipSplash");
+    } catch {
+      return false;
+    }
+  }, []);
+  const [showSplash, setShowSplash] = useState(!skipSplash);
+  const helloScheduled = useRef(false);
+
+  // The first greeting is tied to the splash clearing (or its skip) rather
+  // than firing on a fixed delay, so it never fires and expires unseen
+  // behind the overlay. Only applies when we're landing straight on Today —
+  // onboarding and the daily mood check-in trigger their own hello().
+  useEffect(() => {
+    if (!skipSplash || !ready || !state || helloScheduled.current) return;
+    if (state.screen !== "today") return;
+    helloScheduled.current = true;
+    hello();
+  }, [skipSplash, ready, state, hello]);
+
+  const handleSplashDone = () => {
+    setShowSplash(false);
+    setTimeout(() => {
+      if (!helloScheduled.current && state && state.screen === "today") {
+        helloScheduled.current = true;
+        hello();
+      }
+    }, 30);
+  };
 
   if (!ready || !state) {
-    return <div style={{ minHeight: "100dvh", background: THEMES.meadow.bg }} />;
+    return (
+      <div style={{ minHeight: "100dvh", background: THEMES.meadow.bg, position: "relative" }}>
+        {showSplash && <Splash onDone={handleSplashDone} />}
+      </div>
+    );
   }
 
   const theme = THEMES[state.theme] || THEMES.meadow;
@@ -58,6 +96,7 @@ export default function App() {
       )}
 
       {state.med && <Meditation bud={bud} theme={theme} />}
+      {showSplash && <Splash onDone={handleSplashDone} />}
     </div>
   );
 }
