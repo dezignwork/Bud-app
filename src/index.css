@@ -11,9 +11,25 @@
 
 * { box-sizing: border-box; }
 
-html, body, #root {
+html, body {
   height: 100%;
+  width: 100%;
   margin: 0;
+  /* Pin the page to the visual viewport. Without this, focusing/blurring an
+     input in the installed iOS app can leave the whole page scrolled down
+     slightly, showing blank space below the app that needs a manual pull
+     to fix — position:fixed removes the page from normal scroll flow so
+     there's nothing for the keyboard resize to leave scrolled. */
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }
 
 body {

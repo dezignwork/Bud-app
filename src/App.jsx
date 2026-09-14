@@ -13,30 +13,34 @@ export default function App() {
   const { ready, state, goScreen } = bud;
 
   if (!ready || !state) {
-    return <div style={{ minHeight: "100dvh", background: THEMES.meadow.bg }} />;
+    return <div style={{ height: "100%", background: THEMES.meadow.bg }} />;
   }
 
   const theme = THEMES[state.theme] || THEMES.meadow;
+  const isOnboardingLike = state.screen === "onboarding" || state.screen === "daily-mood";
 
   return (
     <div
       style={{
-        minHeight: "100dvh", height: "100dvh", maxWidth: 480, margin: "0 auto",
+        height: "100%", maxWidth: 480, margin: "0 auto",
         background: theme.bg, color: theme.ink, display: "flex", flexDirection: "column",
         fontFamily: "Inter, system-ui, sans-serif", WebkitFontSmoothing: "antialiased",
         paddingTop: "env(safe-area-inset-top)", boxSizing: "border-box", overflow: "hidden",
         position: "relative",
       }}
     >
-      {state.screen === "onboarding" ? (
-        <Onboarding bud={bud} theme={theme} />
+      {isOnboardingLike ? (
+        <Onboarding bud={bud} theme={theme} dailyCheckIn={state.screen === "daily-mood"} />
       ) : (
         <>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 26px 14px" }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: -0.4 }}>
               {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: theme.chip, color: theme.chipInk, fontSize: 13, fontWeight: 700, letterSpacing: -0.3 }}>
+            <div
+              onClick={() => goScreen("grove")}
+              style={{ display: "flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: theme.chip, color: theme.chipInk, fontSize: 13, fontWeight: 700, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease" }}
+            >
               <span style={{ flex: "none", width: 8, height: 8, borderRadius: "100% 0 100% 0", background: "currentColor" }} />
               <span style={{ whiteSpace: "nowrap" }}>{state.streak} days</span>
             </div>

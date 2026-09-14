@@ -28,6 +28,7 @@ const defaults = () => ({
   entries: [],
   month: monthKey(),
   openedDates: [],
+  lastMoodPromptDate: null,
 });
 
 export function loadState() {
@@ -76,6 +77,7 @@ export function saveState(state) {
         entries: state.entries,
         month: monthKey(),
         openedDates: state.openedDates,
+        lastMoodPromptDate: state.lastMoodPromptDate,
       })
     );
   } catch {

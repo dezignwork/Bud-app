@@ -2,12 +2,14 @@ import { MOODS, ONBOARDING_STEPS, fillName } from "../data";
 import Plant from "../components/Plant";
 import { PopBubble } from "../components/SpeechBubble";
 
-export default function Onboarding({ bud, theme }) {
-  const { state, setName, pickMood, obNext, nameOrFriend } = bud;
-  const step = ONBOARDING_STEPS[state.step];
-  const isName = state.step === 1;
-  const isMood = state.step === 3;
+export default function Onboarding({ bud, theme, dailyCheckIn = false }) {
+  const { state, setName, pickMood, obNext, finishDailyCheckIn, nameOrFriend } = bud;
+  const stepIndex = dailyCheckIn ? 3 : state.step;
+  const step = ONBOARDING_STEPS[stepIndex];
+  const isName = !dailyCheckIn && state.step === 1;
+  const isMood = stepIndex === 3;
   const name = nameOrFriend(state);
+  const onCta = dailyCheckIn ? finishDailyCheckIn : obNext;
 
   return (
     <div style={{ flex: 1, boxSizing: "border-box", display: "flex", flexDirection: "column", padding: "0 32px 34px", minHeight: 0, overflowY: "auto" }}>
@@ -55,7 +57,7 @@ export default function Onboarding({ bud, theme }) {
 
       <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center" }}>
         <button
-          onClick={obNext}
+          onClick={onCta}
           style={{
             width: "100%", boxSizing: "border-box", textAlign: "center", padding: "20px 32px", borderRadius: 999,
             background: theme.btnBg, color: theme.btnFg, fontSize: 16, fontWeight: 400,
@@ -64,11 +66,13 @@ export default function Onboarding({ bud, theme }) {
         >
           {state.editingName ? "Save" : step.cta}
         </button>
-        <div style={{ display: "flex", gap: 7 }}>
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} style={{ width: 6, height: 6, borderRadius: 3, background: theme.ink, opacity: i === state.step ? 1 : 0.22 }} />
-          ))}
-        </div>
+        {!dailyCheckIn && (
+          <div style={{ display: "flex", gap: 7 }}>
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} style={{ width: 6, height: 6, borderRadius: 3, background: theme.ink, opacity: i === state.step ? 1 : 0.22 }} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

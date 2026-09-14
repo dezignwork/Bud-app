@@ -30,10 +30,7 @@ export default function Grove({ bud, theme }) {
 
   return (
     <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
-      <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1, marginBottom: 6 }}>{name}’s grove</div>
-      <div style={{ fontSize: 15, fontWeight: 300, lineHeight: 1.25, opacity: 0.7, marginBottom: 22 }}>
-        {state.streak} gentle days in a row. Nothing blooms all year.
-      </div>
+      <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1, marginBottom: 22 }}>{name}’s grove</div>
 
       <div style={{ background: theme.card, borderRadius: 40, padding: "26px 24px", marginBottom: 18 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>

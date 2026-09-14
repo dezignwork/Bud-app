@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { REACTIONS, SAVE_MSGS, THANKS, fillName, linesForMood } from "./data";
-import { loadState, markOpenedToday, saveState } from "./storage";
+import { dateKey, loadState, markOpenedToday, saveState } from "./storage";
 
 const timers = () => ({});
 
@@ -16,11 +16,12 @@ export default function useBud() {
   useEffect(() => {
     const loaded = loadState();
     const { openedDates, streak } = markOpenedToday(loaded.openedDates);
+    const needsDailyMoodCheck = loaded.onboarded && loaded.lastMoodPromptDate !== dateKey();
     setState({
       ...loaded,
       openedDates,
       streak,
-      screen: loaded.onboarded ? "today" : "onboarding",
+      screen: !loaded.onboarded ? "onboarding" : needsDailyMoodCheck ? "daily-mood" : "today",
       step: 0,
       editingName: false,
       extra: 0,
@@ -55,8 +56,8 @@ export default function useBud() {
   // Persist the durable slice whenever it changes (skip transient UI fields).
   const durableKey = useMemo(() => {
     if (!state) return "";
-    const { onboarded, name, mood, theme, potShape, saved, entries, openedDates } = state;
-    return JSON.stringify({ onboarded, name, mood, theme, potShape, saved, entries, openedDates });
+    const { onboarded, name, mood, theme, potShape, saved, entries, openedDates, lastMoodPromptDate } = state;
+    return JSON.stringify({ onboarded, name, mood, theme, potShape, saved, entries, openedDates, lastMoodPromptDate });
   }, [state]);
   useEffect(() => {
     if (!ready || !state) return;
@@ -86,14 +87,20 @@ export default function useBud() {
 
   // Onboarding ---------------------------------------------------------
   const setName = useCallback((name) => patch({ name }), [patch]);
-  const pickMood = useCallback((mood) => patch({ mood, extra: 0 }), [patch]);
+  // Picking a mood — from onboarding, the daily check-in, or the Mood tab —
+  // also counts as that day's check-in, so it isn't asked again today.
+  const pickMood = useCallback((mood) => patch({ mood, extra: 0, lastMoodPromptDate: dateKey() }), [patch]);
   const obNext = useCallback(() => {
     patch((s) => {
       if (s.editingName) return { screen: "themes", editingName: false };
       if (s.step < 3) return { step: s.step + 1 };
-      return { screen: "today", step: 0, onboarded: true };
+      return { screen: "today", step: 0, onboarded: true, lastMoodPromptDate: dateKey() };
     });
   }, [patch]);
+  const finishDailyCheckIn = useCallback(() => {
+    patch({ screen: "today", lastMoodPromptDate: dateKey() });
+    hello();
+  }, [patch, hello]);
   const replayIntro = useCallback(() => patch({ screen: "onboarding", step: 0, editingName: false }), [patch]);
   const editName = useCallback(() => patch({ screen: "onboarding", step: 1, editingName: true }), [patch]);
 
@@ -300,7 +307,7 @@ export default function useBud() {
   return {
     ready, state, patch, hello, goScreen,
     todayLine, nameOrFriend,
-    setName, pickMood, obNext, replayIntro, editName,
+    setName, pickMood, obNext, finishDailyCheckIn, replayIntro, editName,
     tapPlant, save, next, water,
     pullStart, pullMove, pullEnd,
     keepDown: swipeDown("keep"), nextDown: swipeDown("next"), waterDown: swipeDown("water"),
