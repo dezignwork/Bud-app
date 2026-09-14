@@ -13,7 +13,7 @@ export default function App() {
   const { ready, state, goScreen } = bud;
 
   if (!ready || !state) {
-    return <div style={{ height: "100%", background: THEMES.meadow.bg }} />;
+    return <div style={{ minHeight: "100dvh", background: THEMES.meadow.bg }} />;
   }
 
   const theme = THEMES[state.theme] || THEMES.meadow;
@@ -22,7 +22,7 @@ export default function App() {
   return (
     <div
       style={{
-        height: "100%", maxWidth: 480, margin: "0 auto",
+        minHeight: "100dvh", height: "100dvh", maxWidth: 480, margin: "0 auto",
         background: theme.bg, color: theme.ink, display: "flex", flexDirection: "column",
         fontFamily: "Inter, system-ui, sans-serif", WebkitFontSmoothing: "antialiased",
         paddingTop: "env(safe-area-inset-top)", boxSizing: "border-box", overflow: "hidden",

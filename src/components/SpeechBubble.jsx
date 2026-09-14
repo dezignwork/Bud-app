@@ -38,7 +38,7 @@ export function PopBubble({ theme, title, body, tailSide = "top" }) {
     <div
       style={{
         background: theme.bubble, color: theme.bubbleInk, borderRadius: 24,
-        padding: "20px 24px", maxWidth: 280, position: "relative",
+        padding: "20px 24px", maxWidth: 340, width: "max-content", position: "relative",
         animation: "pop .3s ease both",
       }}
     >

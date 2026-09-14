@@ -12,7 +12,7 @@ export default function Onboarding({ bud, theme, dailyCheckIn = false }) {
   const onCta = dailyCheckIn ? finishDailyCheckIn : obNext;
 
   return (
-    <div style={{ flex: 1, boxSizing: "border-box", display: "flex", flexDirection: "column", padding: "0 32px 34px", minHeight: 0, overflowY: "auto" }}>
+    <div style={{ flex: 1, boxSizing: "border-box", display: "flex", flexDirection: "column", padding: "0 20px 34px", minHeight: 0, overflowY: "auto" }}>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 28, textAlign: "center" }}>
         <Plant theme={theme} potShape={state.potShape} streak={state.streak} size="small" />
         <PopBubble theme={theme} title={fillName(step.title, name)} body={step.body} />
