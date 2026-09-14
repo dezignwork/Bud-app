@@ -6,6 +6,7 @@ export function TailBubble({ theme, children, style, mirror = false, animKey }) 
       style={{
         position: "absolute", left: mirror ? "auto" : 4, right: mirror ? 4 : "auto",
         zIndex: 4, transformOrigin: mirror ? "bottom right" : "bottom left",
+        width: "fit-content", maxWidth: 252,
         animation: "greetdrift 2.4s ease forwards", ...style,
       }}
     >
@@ -13,7 +14,7 @@ export function TailBubble({ theme, children, style, mirror = false, animKey }) 
         style={{
           background: theme.bubble, color: theme.bubbleInk, borderRadius: 18,
           padding: "11px 16px", fontSize: 15, fontWeight: 400, lineHeight: 1.25,
-          maxWidth: 252, textWrap: "balance", boxShadow: `0 0 0 1px ${theme.ghostLine}`,
+          width: "fit-content", maxWidth: "100%", textWrap: "balance", boxShadow: `0 0 0 1px ${theme.ghostLine}`,
         }}
       >
         {children}
