@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { REACTIONS, SAVE_MSGS, THANKS, fillName, linesForMood } from "./data";
 import { dateKey, loadState, markOpenedToday, saveState } from "./storage";
+import { pullCloudState, pushCloudState } from "./cloudSync";
 
 const timers = () => ({});
 
@@ -51,6 +52,22 @@ export default function useBud() {
     // The initial greeting is timed to the launch splash instead of firing
     // here directly — see App.jsx, which calls hello() once the splash (or
     // its skip) clears, so it doesn't fire and expire behind the overlay.
+
+    // If this device has no local onboarding record — a fresh install, or
+    // local storage was cleared — check for a Supabase backup under this
+    // device's id before assuming it's a genuinely new user. A no-op when
+    // Supabase isn't configured or there's nothing to restore.
+    if (!loaded.onboarded) {
+      pullCloudState().then((cloud) => {
+        if (!cloud || !cloud.onboarded) return;
+        const { openedDates: co, streak: cs } = markOpenedToday(cloud.openedDates || []);
+        setState((s) => {
+          if (!s || s.onboarded) return s;
+          const needsCheck = cloud.lastMoodPromptDate !== dateKey();
+          return { ...s, ...cloud, openedDates: co, streak: cs, screen: needsCheck ? "daily-mood" : "today" };
+        });
+      });
+    }
   }, []);
 
   // Persist the durable slice whenever it changes (skip transient UI fields).
@@ -62,6 +79,7 @@ export default function useBud() {
   useEffect(() => {
     if (!ready || !state) return;
     saveState(state);
+    pushCloudState(JSON.parse(durableKey));
   }, [ready, durableKey]);
 
   const patch = useCallback((p) => setState((s) => ({ ...s, ...(typeof p === "function" ? p(s) : p) })), []);

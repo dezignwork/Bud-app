@@ -24,6 +24,7 @@ export default function App() {
   }, []);
   const [showSplash, setShowSplash] = useState(!skipSplash);
   const helloScheduled = useRef(false);
+  const hiddenAtRef = useRef(null);
 
   // The first greeting is tied to the splash clearing (or its skip) rather
   // than firing on a fixed delay, so it never fires and expires unseen
@@ -35,6 +36,29 @@ export default function App() {
     helloScheduled.current = true;
     hello();
   }, [skipSplash, ready, state, hello]);
+
+  // iOS (and most browsers) often keep a PWA's page alive in the background
+  // and just resume it on reopen instead of reloading — so the splash above,
+  // which only runs once per real page load, would otherwise show just once
+  // per install. Re-arm it whenever the app comes back from a real
+  // backgrounding (a brief threshold filters out incidental UI blips like a
+  // quick Control Center swipe) so it plays on every open, not just the first.
+  useEffect(() => {
+    if (skipSplash) return;
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        hiddenAtRef.current = Date.now();
+        return;
+      }
+      if (document.visibilityState === "visible" && hiddenAtRef.current && Date.now() - hiddenAtRef.current > 1200) {
+        hiddenAtRef.current = null;
+        helloScheduled.current = false;
+        setShowSplash(true);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, [skipSplash]);
 
   const handleSplashDone = () => {
     setShowSplash(false);

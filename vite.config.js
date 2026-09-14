@@ -26,9 +26,19 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // App shell + all data is local-only (localStorage), so a simple
-        // precache of the build output gives full offline support.
-        globPatterns: ["**/*.{js,css,html,png,svg,woff2}"],
+        // Hashed JS/CSS/asset filenames are immutable, so precaching them is
+        // safe and gives full offline support. index.html is deliberately
+        // NOT precached — it's served network-first below so every real
+        // app open picks up the latest deploy instead of an old cached
+        // shell (which previously only cleared on re-adding to homescreen).
+        globPatterns: ["**/*.{js,css,png,svg,woff2}"],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === "navigate",
+            handler: "NetworkFirst",
+            options: { cacheName: "bud-pages", networkTimeoutSeconds: 3 },
+          },
+        ],
       },
     }),
   ],
