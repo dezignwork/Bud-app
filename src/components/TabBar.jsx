@@ -7,8 +7,7 @@ const TABS = [
 
 export default function TabBar({ theme, screen, onGo, justSaved }) {
   return (
-    <div style={{ display: "flex", gap: 6, padding: "8px 20px calc(26px + env(safe-area-inset-bottom))", position: "relative" }}>
-      <div style={{ position: "absolute", left: "50%", bottom: "calc(12px + env(safe-area-inset-bottom))", width: 139, height: 5, marginLeft: -69.5, borderRadius: 3, background: "currentColor", opacity: 0.3 }} />
+    <div style={{ display: "flex", gap: 6, padding: "8px 20px calc(16px + env(safe-area-inset-bottom))" }}>
       {TABS.map(([key, name]) => {
         const active = screen === key;
         return (
