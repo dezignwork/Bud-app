@@ -29,6 +29,9 @@ html, body {
 #root {
   position: absolute;
   inset: 0;
+  /* --app-height (set in main.jsx from window.visualViewport) is the source
+     of truth; falls back to 100% before that first JS tick runs. */
+  height: var(--app-height, 100%);
   overflow: hidden;
 }
 

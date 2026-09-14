@@ -64,8 +64,8 @@ export const REACTIONS = [
 export const ONBOARDING_STEPS = [
   { title: "Hi, I'm Bud.", body: "Let's grow each day, together.", cta: "Nice to meet you" },
   { title: "what should I call you?", body: "Let's be friends!", cta: "That's me" },
-  { title: "One gentle line a day, {n}.", body: "Pull down for another if today needs a second one. I grow a little each time you come back.", cta: "Got it!" },
-  { title: "how are you arriving, {n}?", body: "You can change this any day. Nothing here is a commitment.", cta: "Let's grow" },
+  { title: "One gentle line a day, {n}.", body: "I grow a little each time you come back.", cta: "Got it!" },
+  { title: "How are you feeling, {n}?", body: "You can change this any day. Nothing here is a commitment.", cta: "Let's Grow!" },
 ];
 
 export const fillName = (text, name) => text.split("{n}").join(name).split("{name}").join(name);
