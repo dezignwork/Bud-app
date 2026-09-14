@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["icons/favicon-32-v3.png", "icons/apple-touch-icon-v3.png"],
+      includeAssets: ["icons/favicon-32-v4.png", "icons/apple-touch-icon-v4.png"],
       manifest: {
         name: "Bud — daily affirmations",
         short_name: "Bud",
@@ -20,9 +20,9 @@ export default defineConfig({
         background_color: "#f8f7f4",
         theme_color: "#98ac9f",
         icons: [
-          { src: "/icons/icon-192-v3.png", sizes: "192x192", type: "image/png" },
-          { src: "/icons/icon-512-v3.png", sizes: "512x512", type: "image/png" },
-          { src: "/icons/icon-maskable-512-v3.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+          { src: "/icons/icon-192-v4.png", sizes: "192x192", type: "image/png" },
+          { src: "/icons/icon-512-v4.png", sizes: "512x512", type: "image/png" },
+          { src: "/icons/icon-maskable-512-v4.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
         ],
       },
       workbox: {
