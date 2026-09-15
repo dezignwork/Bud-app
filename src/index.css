@@ -14,6 +14,9 @@
 html, body, #root {
   height: 100%;
   margin: 0;
+  /* Matches the splash/default theme background so a brief iOS viewport-height
+     miscalculation on launch shows this cream tone instead of blank white. */
+  background: #f8f7f4;
 }
 
 body {
