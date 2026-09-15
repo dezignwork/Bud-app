@@ -26,7 +26,10 @@ export default function Splash({ onDone }) {
   return (
     <div
       style={{
-        position: "absolute", inset: 0, zIndex: 50,
+        // Fixed (not absolute) so this always covers the real screen edges,
+        // independent of the app shell's own height calc — see TabBar.jsx
+        // for why that calc can briefly come up short on iOS.
+        position: "fixed", inset: 0, maxWidth: 480, margin: "0 auto", zIndex: 50,
         background: "#F8F7F4",
         display: "flex", alignItems: "center", justifyContent: "center",
         animation: reduced

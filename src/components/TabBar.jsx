@@ -5,7 +5,7 @@ const TABS = [
   ["themes", "Mood"],
 ];
 
-export default function TabBar({ theme, screen, onGo, justSaved }) {
+function TabRow({ theme, screen, onGo, justSaved }) {
   return (
     <div style={{ display: "flex", gap: 6, padding: "8px 20px calc(16px + env(safe-area-inset-bottom))" }}>
       {TABS.map(([key, name]) => {
@@ -27,5 +27,22 @@ export default function TabBar({ theme, screen, onGo, justSaved }) {
         );
       })}
     </div>
+  );
+}
+
+// Rendered twice: an invisible copy reserves the tab bar's exact height in
+// the normal flex flow, while the real one is fixed to the true screen
+// bottom — so it always sits flush with the real edge even on the odd
+// frame where the app shell's own height comes up short (see App.jsx).
+export default function TabBar(props) {
+  return (
+    <>
+      <div aria-hidden="true" style={{ visibility: "hidden", pointerEvents: "none" }}>
+        <TabRow {...props} />
+      </div>
+      <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, maxWidth: 480, margin: "0 auto", background: props.theme.bg, zIndex: 10 }}>
+        <TabRow {...props} />
+      </div>
+    </>
   );
 }

@@ -35,7 +35,10 @@ export default function Meditation({ bud, theme }) {
   return (
     <div
       style={{
-        position: "absolute", inset: 0, zIndex: 20, background: theme.bg, color: theme.ink,
+        // Fixed (not absolute) so this always covers the real screen edges,
+        // independent of the app shell's own height calc — see TabBar.jsx
+        // for why that calc can briefly come up short on iOS.
+        position: "fixed", inset: 0, maxWidth: 480, margin: "0 auto", zIndex: 20, background: theme.bg, color: theme.ink,
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         padding: "0 40px", textAlign: "center", animation: "medIn .5s ease both",
       }}
