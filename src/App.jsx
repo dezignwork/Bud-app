@@ -108,14 +108,14 @@ export default function App() {
             </div>
           </div>
 
+          <TabBar theme={theme} screen={state.screen} onGo={goScreen} justSaved={state.justSaved} />
+
           <div key={state.screen} style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0, animation: "screenIn .48s cubic-bezier(.22,1,.36,1) both" }}>
             {state.screen === "today" && <Today bud={bud} theme={theme} />}
             {state.screen === "grove" && <Grove bud={bud} theme={theme} />}
             {state.screen === "journal" && <Journal bud={bud} theme={theme} />}
             {state.screen === "themes" && <Mood bud={bud} theme={theme} />}
           </div>
-
-          <TabBar theme={theme} screen={state.screen} onGo={goScreen} justSaved={state.justSaved} />
         </>
       )}
 
