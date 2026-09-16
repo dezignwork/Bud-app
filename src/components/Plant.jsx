@@ -86,12 +86,13 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
               background: theme.pot, clipPath: P.clip, borderRadius: P.radius,
             }}
           />
-          {/* pot rim */}
+          {/* pot rim — a shade darker than the body so the lip actually reads
+              as a separate ceramic edge instead of blending into the pot */}
           <div
             style={{
               position: "absolute", left: "50%", bottom: rimBottom,
               width: rimW, height: rimH, marginLeft: -rimW / 2,
-              background: theme.pot, clipPath: P.rimClip, borderRadius: P.rimRadius,
+              background: `color-mix(in oklab, ${theme.pot}, #000000 16%)`, clipPath: P.rimClip, borderRadius: P.rimRadius,
               transform: P.rimT === "none" ? undefined : P.rimT,
             }}
           />
