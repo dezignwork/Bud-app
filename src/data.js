@@ -19,11 +19,11 @@ export const POT_SHAPES = {
   },
   orb: {
     name: "Round",
-    clip: "none", radius: "50%", rimT: "none",
-    rimClip: "none", rimRadius: "50%",
-    // A real round planter is close to as tall as it is wide, not a flat
-    // oval — scale the shared box dimensions toward that per-shape.
-    widthScale: 0.88, heightScale: 1.5, rimWidthScale: 0.8, rimHeightScale: 0.5,
+    // A rounded jar body (wider than tall, bulging sides, flat-ish top and
+    // bottom) plus a thin flat rim band at the mouth — not a full sphere.
+    clip: "none", radius: "34%", rimT: "none",
+    rimClip: "none", rimRadius: "6px 6px 0 0",
+    widthScale: 0.95, heightScale: 1.18, rimWidthScale: 0.72, rimHeightScale: 0.7,
   },
 };
 
