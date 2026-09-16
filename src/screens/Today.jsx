@@ -5,8 +5,10 @@ import { plantGrowth } from "../plantGrowth";
 import { TailBubble } from "../components/SpeechBubble";
 
 // How far the plant is lifted off the container's bottom to rest on top of
-// the shelf's plank, rather than floating on plain ground.
-const PLANK_LIFT = 58;
+// the shelf's plank, rather than floating on plain ground. Plant's own box
+// has 6px of built-in bottom padding, so the actual lift is 6px less than
+// the plank's surface height (58px) or the pot would hover just above it.
+const PLANK_LIFT = 52;
 
 function Droplets({ theme, rainN }) {
   const drops = useMemo(() => {
@@ -139,14 +141,14 @@ export default function Today({ bud, theme }) {
         </div>
       )}
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", transform: `translateY(${state.pull}px)`, transition: state.dragging ? "none" : "transform .32s cubic-bezier(.34,1.4,.64,1)", minHeight: 0 }}>
-        <div style={{ paddingTop: 0 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+        <div style={{ paddingTop: 0, transform: `translateY(${state.pull}px)`, transition: state.dragging ? "none" : "transform .32s cubic-bezier(.34,1.4,.64,1)" }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.6, opacity: 0.5, marginBottom: 14 }}>{lineTag}</div>
           <div style={{ fontSize: 38, fontWeight: 700, letterSpacing: -2.28, lineHeight: 1.06, textWrap: "pretty" }}>{line}</div>
         </div>
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
-          <ShelfScene theme={theme} />
+          <ShelfScene theme={theme} quoteLength={line.length} />
 
           {state.greet && (
             <TailBubble theme={theme} animKey={`greet-${state.greetN}`} style={{ bottom: msgBottom }}>
