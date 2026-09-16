@@ -1,6 +1,6 @@
-import { useMemo } from "react";
 import Plant, { potMetrics } from "../components/Plant";
 import ShelfScene from "../components/ShelfScene";
+import WaterCan from "../components/WaterCan";
 import { plantGrowth } from "../plantGrowth";
 import { TailBubble } from "../components/SpeechBubble";
 
@@ -10,39 +10,6 @@ import { TailBubble } from "../components/SpeechBubble";
 // the plank's surface height (66px, matching ShelfScene's plankTop) or the
 // pot would hover just above it.
 const PLANK_LIFT = 60;
-
-function Droplets({ theme, rainN }) {
-  const drops = useMemo(() => {
-    const out = [];
-    for (let i = 0; i < 52; i++) {
-      out.push({
-        left: (Math.random() * 97 + 1).toFixed(1) + "%",
-        width: 1.5,
-        height: (Math.random() * 15 + 13).toFixed(0) + "px",
-        opacity: (Math.random() * 0.28 + 0.22).toFixed(2),
-        duration: (Math.random() * 0.33 + 0.62).toFixed(2) + "s",
-        delay: (Math.random() * 1.5).toFixed(2) + "s",
-      });
-    }
-    return out;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rainN]);
-
-  return (
-    <div style={{ position: "absolute", inset: 0, zIndex: 8, pointerEvents: "none", overflow: "hidden" }}>
-      {drops.map((d, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute", top: -60, left: d.left, width: d.width, height: d.height,
-            borderRadius: 999, background: theme.leaf, opacity: d.opacity,
-            animation: `rainFall ${d.duration} linear ${d.delay} infinite`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerDown, onPointerMove, onPointerUp, disabledOpacity }) {
   return (
@@ -94,6 +61,11 @@ export default function Today({ bud, theme }) {
   const { stemH } = plantGrowth(state.streak);
   const { stemBottom } = potMetrics(state.potShape, true);
   const msgBottom = Math.round(stemBottom + stemH + 46 + 10 + PLANK_LIFT);
+  // Where the watering can's spout should hover: partway up the stem (not
+  // above the full canopy like msgBottom, which is calibrated for a speech
+  // bubble) so the pour visibly lands on the leaves. The can's own spout
+  // sits ~41px above its group's bottom edge, so that's subtracted back out.
+  const canBottom = Math.round(PLANK_LIFT + 6 + stemBottom + stemH * 0.95 - 41);
 
   const keepW = (state.sw === "keep" ? 68 + state.swX : 68) + "px";
   const nextW = (state.sw === "next" ? 68 + state.swX : 68) + "px";
@@ -114,8 +86,6 @@ export default function Today({ bud, theme }) {
         {state.pull > 29 ? "let go for another" : state.pull > 8 ? "keep pulling…" : ""}
       </div>
 
-      {state.rain && <Droplets theme={theme} rainN={state.rainN} />}
-
       <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", zIndex: 5, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 11 }}>
         <ActionTab
           theme={theme} active={state.sw === "keep"} width={keepW}
@@ -131,7 +101,7 @@ export default function Today({ bud, theme }) {
         />
         <ActionTab
           theme={theme} active={state.sw === "water"} width={waterW}
-          labelOpacity={state.sw === "water" && state.swX > 30 ? 1 : 0} label={state.rain ? "Raining" : "Water me!"}
+          labelOpacity={state.sw === "water" && state.swX > 30 ? 1 : 0} label={state.rain ? "Watering…" : "Water me!"}
           icon={<DropIcon />} disabledOpacity={state.rain ? 0.55 : 1}
           onPointerDown={waterDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
         />
@@ -153,6 +123,8 @@ export default function Today({ bud, theme }) {
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
           <ShelfScene theme={theme} />
+
+          <WaterCan theme={theme} active={state.rain} bottom={canBottom} />
 
           {state.greet && (
             <TailBubble theme={theme} animKey={`greet-${state.greetN}`} style={{ bottom: msgBottom }}>

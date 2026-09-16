@@ -50,11 +50,26 @@ button { font: inherit; }
   82% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-14px); }
 }
-@keyframes rainFall {
-  0% { opacity: 0; transform: translateY(-60px); }
-  8% { opacity: 1; }
-  92% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(760px); }
+/* The "Water me!" hand-and-can animation: wcSlide carries the whole group
+   in from off-screen left and back out; wcTip rotates just the can+hand
+   around the wrist to pour, nested inside wcSlide's translation so the two
+   run independently on the same timeline. wcDrop is one falling droplet
+   from the spout, staggered by delay across the pour window. */
+@keyframes wcSlide {
+  0% { transform: translateX(-260px); }
+  15% { transform: translateX(0); }
+  85% { transform: translateX(0); }
+  100% { transform: translateX(-260px); }
+}
+@keyframes wcTip {
+  0%, 25% { transform: rotate(0deg); }
+  35%, 80% { transform: rotate(30deg); }
+  92%, 100% { transform: rotate(0deg); }
+}
+@keyframes wcDrop {
+  0% { opacity: 0; transform: translateY(0); }
+  20% { opacity: .85; }
+  100% { opacity: 0; transform: translateY(30px); }
 }
 @keyframes soothe {
   0% { transform: rotate(0); } 25% { transform: rotate(2.4deg); } 50% { transform: rotate(0); }
