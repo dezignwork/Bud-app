@@ -46,8 +46,12 @@ function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerD
   );
 }
 
-const DropIcon = ({ filled }) => (
-  <svg width="22" height="22" viewBox="0 0 20 20" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+// Explicit theme.cardInk rather than currentColor for the fill — the heart
+// (a text glyph) and this SVG path sit in the same inherited-color context
+// already, but hardcoding both to the same literal value guarantees they
+// render pixel-identical rather than relying on that inheritance chain.
+const DropIcon = ({ theme, filled }) => (
+  <svg width="22" height="22" viewBox="0 0 20 20" fill={filled ? theme.cardInk : "none"} stroke={theme.cardInk} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M10 2.4c3 3.6 5.2 6.4 5.2 9a5.2 5.2 0 0 1-10.4 0c0-2.6 2.2-5.4 5.2-9Z" />
   </svg>
 );
@@ -127,7 +131,7 @@ export default function Today({ bud, theme }) {
             <ActionTab
               theme={theme} active={state.sw === "water"} width={waterW}
               labelOpacity={state.sw === "water" && state.swX > 30 ? 1 : 0} label={state.rain ? "Watering…" : "Water me!"}
-              icon={<DropIcon filled={state.rain} />} disabledOpacity={state.rain ? 0.55 : 1}
+              icon={<DropIcon theme={theme} filled={state.rain} />} disabledOpacity={state.rain ? 0.55 : 1}
               onPointerDown={waterDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
             />
           </div>
