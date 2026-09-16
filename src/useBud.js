@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { REACTIONS, SAVE_MSGS, THANKS, fillName, linesForMood } from "./data";
 import { dateKey, loadState, markOpenedToday, saveState } from "./storage";
 import { pullCloudState, pushCloudState } from "./cloudSync";
+import { CYCLE_MS as WATER_CAN_MS } from "./components/WaterCan";
 
 const timers = () => ({});
 
@@ -254,17 +255,17 @@ export default function useBud() {
       clearTimeout(t.current.rain2);
       clearTimeout(t.current.rain3);
       // The thanks message waits until the watering-can animation has fully
-      // exited (it runs for exactly 3.6s, matching rain2 below) so it never
-      // overlaps the hand — it reads as Bud's reaction to being watered,
-      // not commentary mid-pour.
+      // exited (it runs for exactly WATER_CAN_MS, matching rain2 below) so
+      // it never overlaps the can — it reads as Bud's reaction to being
+      // watered, not commentary mid-pour.
       t.current.rain1 = setTimeout(() => {
         patch((s2) => ({
           tapMsg: fillName(THANKS[Math.floor(Math.random() * THANKS.length)], nameOrFriend(s2)),
           msgN: s2.msgN + 1,
         }));
-      }, 3700);
-      t.current.rain2 = setTimeout(() => patch({ rain: false }), 3600);
-      t.current.rain3 = setTimeout(() => patch({ tapMsg: null }), 6300);
+      }, WATER_CAN_MS + 100);
+      t.current.rain2 = setTimeout(() => patch({ rain: false }), WATER_CAN_MS);
+      t.current.rain3 = setTimeout(() => patch({ tapMsg: null }), WATER_CAN_MS + 2700);
       return { ...s, rain: true, rainN: s.rainN + 1 };
     });
   }, [patch]);

@@ -93,7 +93,7 @@ export default function App() {
 
   if (!ready || !state) {
     return (
-      <div style={{ minHeight: "100dvh", background: THEMES.meadow.bg, position: "relative" }}>
+      <div style={{ minHeight: "100svh", background: THEMES.meadow.bg, position: "relative" }}>
         {showSplash && <Splash onDone={handleSplashDone} theme={THEMES.meadow} />}
       </div>
     );
@@ -105,7 +105,7 @@ export default function App() {
   return (
     <div
       style={{
-        minHeight: "100dvh", height: "100dvh", maxWidth: 480, margin: "0 auto",
+        minHeight: "100svh", height: "100svh", maxWidth: 480, margin: "0 auto",
         background: theme.bg, color: theme.ink, display: "flex", flexDirection: "column",
         fontFamily: "Inter, system-ui, sans-serif", WebkitFontSmoothing: "antialiased",
         paddingTop: "env(safe-area-inset-top)", boxSizing: "border-box", overflow: "hidden",

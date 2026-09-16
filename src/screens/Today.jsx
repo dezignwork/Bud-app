@@ -10,6 +10,14 @@ import { TailBubble } from "../components/SpeechBubble";
 // the plank's surface height (66px, matching ShelfScene's plankTop) or the
 // pot would hover just above it.
 const PLANK_LIFT = 60;
+// ShelfScene's own fixed height (see ShelfScene.jsx) — used below to center
+// the action tabs in the gap between the quote and the shelf, not across
+// the shelf's own height too.
+const SHELF_H = 260;
+// The action-tab stack's own height (3 ActionTabs at 56px + 2 gaps at
+// 11px) — half of it is the minimum center offset that keeps the stack
+// from poking up above its container's top edge once centered on it.
+const TABS_STACK_H = 56 * 3 + 11 * 2;
 
 function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerDown, onPointerMove, onPointerUp, disabledOpacity }) {
   return (
@@ -61,11 +69,12 @@ export default function Today({ bud, theme }) {
   const { stemH } = plantGrowth(state.streak);
   const { stemBottom } = potMetrics(state.potShape, true);
   const msgBottom = Math.round(stemBottom + stemH + 46 + 10 + PLANK_LIFT);
-  // Where the watering can's spout should hover: partway up the stem (not
-  // above the full canopy like msgBottom, which is calibrated for a speech
-  // bubble) so the pour visibly lands on the leaves. The can's own spout
-  // sits ~41px above its group's bottom edge, so that's subtracted back out.
-  const canBottom = Math.round(PLANK_LIFT + 6 + stemBottom + stemH * 0.95 - 41);
+  // Where the watering can's rose (spray head) should hover: partway up the
+  // stem so the pour visibly lands on the leaves, not above the full
+  // canopy like msgBottom (calibrated for a speech bubble). WaterCan's own
+  // emission point sits ~59px below its `bottom`-anchored origin at its
+  // default scale, so that's added back in.
+  const canBottom = Math.round(PLANK_LIFT + 6 + stemBottom + stemH * 0.85 + 59);
 
   const keepW = (state.sw === "keep" ? 68 + state.swX : 68) + "px";
   const nextW = (state.sw === "next" ? 68 + state.swX : 68) + "px";
@@ -86,27 +95,6 @@ export default function Today({ bud, theme }) {
         {state.pull > 29 ? "let go for another" : state.pull > 8 ? "keep pulling…" : ""}
       </div>
 
-      <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", zIndex: 5, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 11 }}>
-        <ActionTab
-          theme={theme} active={state.sw === "keep"} width={keepW}
-          labelOpacity={state.sw === "keep" && state.swX > 30 ? 1 : 0} label={isSaved ? "Kept" : "Keep"}
-          icon={isSaved ? "♥" : "♡"}
-          onPointerDown={keepDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
-        />
-        <ActionTab
-          theme={theme} active={state.sw === "next"} width={nextW}
-          labelOpacity={state.sw === "next" && state.swX > 30 ? 1 : 0} label="One more"
-          icon={<PlusIcon />}
-          onPointerDown={nextDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
-        />
-        <ActionTab
-          theme={theme} active={state.sw === "water"} width={waterW}
-          labelOpacity={state.sw === "water" && state.swX > 30 ? 1 : 0} label={state.rain ? "Watering…" : "Water me!"}
-          icon={<DropIcon />} disabledOpacity={state.rain ? 0.55 : 1}
-          onPointerDown={waterDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
-        />
-      </div>
-
       {state.flying && (
         <div style={{ position: "absolute", left: 28, right: 28, top: 40, zIndex: 3, pointerEvents: "none", transformOrigin: "top center", animation: "swish .8s cubic-bezier(.55,-0.2,.6,1) forwards" }}>
           <div style={{ background: theme.bubble, color: theme.bubbleInk, borderRadius: 32, padding: "24px 26px", boxShadow: `0 0 0 1px ${theme.ghostLine}` }}>
@@ -122,9 +110,40 @@ export default function Today({ bud, theme }) {
         </div>
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
+          {/* Centered in the gap between the quote and the shelf specifically
+              — not across this whole section (which would skew it down
+              toward the shelf, since the shelf itself eats a fixed 260px of
+              it) and not across the whole screen (which would drag in the
+              quote's own height). 50% of this section's height minus half
+              the shelf's fixed height lands exactly on the gap's midpoint.
+              Clamped so a long (3-line) quote — which leaves a gap shorter
+              than the tab stack itself — never pushes the stack up into the
+              quote text; it can still spill down over the shelf art in that
+              case, which reads far better than covering copy. */}
+          <div style={{ position: "absolute", right: 0, top: `max(${TABS_STACK_H / 2}px, calc(50% - ${SHELF_H / 2}px))`, transform: "translateY(-50%)", zIndex: 5, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 11 }}>
+            <ActionTab
+              theme={theme} active={state.sw === "keep"} width={keepW}
+              labelOpacity={state.sw === "keep" && state.swX > 30 ? 1 : 0} label={isSaved ? "Kept" : "Keep"}
+              icon={isSaved ? "♥" : "♡"}
+              onPointerDown={keepDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
+            />
+            <ActionTab
+              theme={theme} active={state.sw === "next"} width={nextW}
+              labelOpacity={state.sw === "next" && state.swX > 30 ? 1 : 0} label="One more"
+              icon={<PlusIcon />}
+              onPointerDown={nextDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
+            />
+            <ActionTab
+              theme={theme} active={state.sw === "water"} width={waterW}
+              labelOpacity={state.sw === "water" && state.swX > 30 ? 1 : 0} label={state.rain ? "Watering…" : "Water me!"}
+              icon={<DropIcon />} disabledOpacity={state.rain ? 0.55 : 1}
+              onPointerDown={waterDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
+            />
+          </div>
+
           <ShelfScene theme={theme} />
 
-          <WaterCan theme={theme} active={state.rain} bottom={canBottom} />
+          <WaterCan active={state.rain} bottom={canBottom} />
 
           {state.greet && (
             <TailBubble theme={theme} animKey={`greet-${state.greetN}`} style={{ bottom: msgBottom }}>
