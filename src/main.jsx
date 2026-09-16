@@ -9,10 +9,25 @@ import App from "./App.jsx";
 // updated sw.js every time the app comes back to the foreground, so a new
 // deploy is ready to take over (skipWaiting + clientsClaim) sooner than
 // "close and reopen twice."
+// Even once a new service worker takes over, the JS already running in this
+// tab stays the old version — skipWaiting/clientsClaim only decides who
+// answers future fetches, it doesn't swap out code already executing in
+// memory. That only happens on an actual reload. So: reload once a new
+// worker has taken control, but only while the app is backgrounded (not
+// mid-interaction) — by the time it's reopened, it's already fresh, with
+// no visible flash and no risk of interrupting something like an unsaved
+// journal draft.
 if ("serviceWorker" in navigator) {
+  let pendingReload = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    pendingReload = true;
+  });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
       navigator.serviceWorker.getRegistration().then((reg) => reg && reg.update());
+    } else if (pendingReload) {
+      pendingReload = false;
+      window.location.reload();
     }
   });
 }
