@@ -36,7 +36,14 @@ export default defineConfig({
           {
             urlPattern: ({ request }) => request.mode === "navigate",
             handler: "NetworkFirst",
-            options: { cacheName: "bud-pages", networkTimeoutSeconds: 3 },
+            options: {
+              cacheName: "bud-pages",
+              networkTimeoutSeconds: 3,
+              // Force an actual network round-trip instead of letting the
+              // browser's own HTTP cache silently answer "network first"
+              // with a stale response it already had lying around.
+              fetchOptions: { cache: "no-store" },
+            },
           },
         ],
       },
