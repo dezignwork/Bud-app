@@ -6,7 +6,7 @@ import { plantGrowth } from "../plantGrowth";
  * `size="small"` is the onboarding mark (fixed 78px stem); `size="large"` is
  * the Today screen mark, whose stem/leaf count grows with streak.
  */
-export default function Plant({ theme, potShape, streak, size = "large", squish = false, soothe = false, onClick }) {
+export default function Plant({ theme, potShape, streak, size = "large", squish = false, soothe = false, scene, onClick }) {
   const P = POT_SHAPES[potShape] || POT_SHAPES.taper;
   const { leaves, stemH } = plantGrowth(streak);
   const large = size === "large";
@@ -40,7 +40,7 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
         transition: "transform .18s cubic-bezier(.34,1.56,.64,1)",
       }}
     >
-      <div style={{ animation: "breathe 5.5s ease-in-out infinite" }}>
+      <div style={{ animation: scene === "shelf" ? "rooted 5.5s ease-in-out infinite" : "breathe 5.5s ease-in-out infinite" }}>
         <div
           style={{
             width: boxW,

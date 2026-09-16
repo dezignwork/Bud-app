@@ -1,7 +1,12 @@
 import { useMemo } from "react";
 import Plant from "../components/Plant";
+import ShelfScene from "../components/ShelfScene";
 import { plantGrowth } from "../plantGrowth";
 import { TailBubble } from "../components/SpeechBubble";
+
+// How far the plant is lifted off the container's bottom to rest on top of
+// the shelf's plank, rather than floating on plain ground.
+const PLANK_LIFT = 58;
 
 function Droplets({ theme, rainN }) {
   const drops = useMemo(() => {
@@ -82,7 +87,7 @@ export default function Today({ bud, theme }) {
   const lineTag = state.extra ? "ONE MORE FOR YOU" : "FOR " + name.toUpperCase();
 
   const { stemH } = plantGrowth(state.streak);
-  const msgBottom = Math.round(58 + stemH + 46 + 10);
+  const msgBottom = Math.round(58 + stemH + 46 + 10 + PLANK_LIFT);
 
   const keepW = (state.sw === "keep" ? 68 + state.swX : 68) + "px";
   const nextW = (state.sw === "next" ? 68 + state.swX : 68) + "px";
@@ -145,6 +150,8 @@ export default function Today({ bud, theme }) {
         </div>
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
+          <ShelfScene theme={theme} />
+
           {state.greet && (
             <TailBubble theme={theme} animKey={`greet-${state.greetN}`} style={{ bottom: msgBottom }}>
               Hi, {name}!
@@ -156,7 +163,9 @@ export default function Today({ bud, theme }) {
             </TailBubble>
           )}
 
-          <Plant theme={theme} potShape={state.potShape} streak={state.streak} size="large" squish={state.squish} soothe={state.rain} onClick={tapPlant} />
+          <div style={{ position: "relative", zIndex: 1, marginBottom: PLANK_LIFT }}>
+            <Plant theme={theme} potShape={state.potShape} streak={state.streak} size="large" squish={state.squish} soothe={state.rain} scene="shelf" onClick={tapPlant} />
+          </div>
         </div>
 
         <div style={{ height: 20 }} />
