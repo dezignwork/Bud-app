@@ -1,7 +1,7 @@
-import { MOODS, POT_SHAPES, THEMES } from "../data";
+import { MOODS, POT_SHAPES } from "../data";
 
 export default function Mood({ bud, theme }) {
-  const { state, pickMood, setPotShape, setTheme, nameOrFriend, editName, replayIntro } = bud;
+  const { state, pickMood, setPotShape, nameOrFriend, editName, replayIntro } = bud;
   const name = nameOrFriend(state);
 
   const now = new Date();
@@ -56,27 +56,6 @@ export default function Mood({ bud, theme }) {
                 <div style={{ position: "absolute", left: "50%", bottom: 28, width: 52, height: 7, marginLeft: -26, background: theme.pot, clipPath: shape.rimClip, borderRadius: shape.rimRadius, transform: shape.rimT === "none" ? undefined : shape.rimT }} />
               </div>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: -0.3 }}>{shape.name}</div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.6, opacity: 0.5, marginBottom: 12 }}>POT &amp; LIGHT</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 26 }}>
-        {Object.entries(THEMES).map(([key, t]) => {
-          const on = state.theme === key;
-          return (
-            <div
-              key={key}
-              onClick={() => setTheme(key)}
-              style={{ display: "flex", alignItems: "center", gap: 16, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "14px 18px", cursor: "pointer", transition: "opacity .16s ease" }}
-            >
-              <div style={{ width: 44, height: 44, borderRadius: 16, background: t.swatch, boxShadow: "inset 0 0 0 1px rgba(0,0,0,.1)" }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: -0.5 }}>{t.name}</div>
-                <div style={{ fontSize: 12.5, fontWeight: 300, opacity: 0.6 }}>{t.note}</div>
-              </div>
-              <div style={{ fontSize: 11, fontWeight: 700, opacity: on ? 0.6 : 0 }}>ON</div>
             </div>
           );
         })}

@@ -123,7 +123,6 @@ export default function useBud() {
   const editName = useCallback(() => patch({ screen: "onboarding", step: 1, editingName: true }), [patch]);
 
   // Mood / Themes tab ----------------------------------------------------
-  const setTheme = useCallback((theme) => patch({ theme }), [patch]);
   const setPotShape = useCallback((potShape) => patch({ potShape }), [patch]);
 
   // Grove tab --------------------------------------------------------------
@@ -333,7 +332,7 @@ export default function useBud() {
     pullStart, pullMove, pullEnd,
     keepDown: swipeDown("keep"), nextDown: swipeDown("next"), waterDown: swipeDown("water"),
     swipeMove, swipeEnd,
-    setTheme, setPotShape,
+    setPotShape,
     toggleEditSaved, removeSaved,
     setDraft, clearEntry, saveEntry, togglePloon, toggleEditEntries, removeEntry,
     beginMed, endMed,

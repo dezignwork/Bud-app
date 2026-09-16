@@ -148,7 +148,7 @@ export default function Today({ bud, theme }) {
         </div>
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
-          <ShelfScene theme={theme} quoteLength={line.length} />
+          <ShelfScene theme={theme} />
 
           {state.greet && (
             <TailBubble theme={theme} animKey={`greet-${state.greetN}`} style={{ bottom: msgBottom }}>
