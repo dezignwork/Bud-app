@@ -19,13 +19,11 @@ export const POT_SHAPES = {
   },
   orb: {
     name: "Round",
-    clip: "none", radius: "50% 50% 48% 48% / 44% 44% 56% 56%", rimT: "scaleX(0.5)",
-    rimClip: "none", rimRadius: "999px 999px 0 0",
-  },
-  urn: {
-    name: "Vase",
-    clip: "polygon(0 0,100% 0,78% 100%,22% 100%)", radius: "42% 42% 26% 26% / 34% 34% 28% 28%",
-    rimT: "scaleX(0.86)", rimClip: "none", rimRadius: "10px 10px 3px 3px",
+    clip: "none", radius: "50%", rimT: "none",
+    rimClip: "none", rimRadius: "50%",
+    // A real round planter is close to as tall as it is wide, not a flat
+    // oval — scale the shared box dimensions toward that per-shape.
+    widthScale: 0.88, heightScale: 1.5, rimWidthScale: 0.8, rimHeightScale: 0.5,
   },
 };
 

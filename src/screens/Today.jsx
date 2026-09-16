@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import Plant from "../components/Plant";
+import Plant, { potMetrics } from "../components/Plant";
 import ShelfScene from "../components/ShelfScene";
 import { plantGrowth } from "../plantGrowth";
 import { TailBubble } from "../components/SpeechBubble";
@@ -90,7 +90,8 @@ export default function Today({ bud, theme }) {
   const lineTag = state.extra ? "ONE MORE FOR YOU" : "FOR " + name.toUpperCase();
 
   const { stemH } = plantGrowth(state.streak);
-  const msgBottom = Math.round(58 + stemH + 46 + 10 + PLANK_LIFT);
+  const { stemBottom } = potMetrics(state.potShape, true);
+  const msgBottom = Math.round(stemBottom + stemH + 46 + 10 + PLANK_LIFT);
 
   const keepW = (state.sw === "keep" ? 68 + state.swX : 68) + "px";
   const nextW = (state.sw === "next" ? 68 + state.swX : 68) + "px";

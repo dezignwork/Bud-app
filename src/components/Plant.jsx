@@ -1,6 +1,20 @@
 import { POT_SHAPES } from "../data";
 import { plantGrowth } from "../plantGrowth";
 
+// Pot body/rim dimensions for a given shape + size, shared by Plant itself
+// and by any screen (e.g. Today.jsx) that needs to know where the stem
+// starts without duplicating this math.
+export function potMetrics(potShape, large) {
+  const P = POT_SHAPES[potShape] || POT_SHAPES.taper;
+  const potW = Math.round((large ? 112 : 94) * (P.widthScale ?? 1));
+  const potH = Math.round((large ? 66 : 60) * (P.heightScale ?? 1));
+  const rimW = Math.round((large ? 126 : 106) * (P.rimWidthScale ?? 1));
+  const rimH = Math.round((large ? 16 : 14) * (P.rimHeightScale ?? 1));
+  const rimBottom = potH - (large ? 8 : 6);
+  const stemBottom = rimBottom;
+  return { potW, potH, rimW, rimH, rimBottom, stemBottom };
+}
+
 /**
  * The Bud plant mark: stem, leaves, pot, and a blinking two-dot face.
  * `size="small"` is the onboarding mark (fixed 78px stem); `size="large"` is
@@ -12,22 +26,21 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
   const large = size === "large";
 
   const boxW = large ? 210 : 150;
-  const boxH = large ? Math.round(58 + stemH + 46) : 170;
-  const stemBottom = large ? 58 : 52;
-  const stemHeight = large ? Math.round(stemH) : 78;
   const leafW = large ? 52 : 38;
   const leafH = large ? 28 : 22;
-  const potW = large ? 112 : 94;
-  const potH = large ? 66 : 60;
-  const rimW = large ? 126 : 106;
-  const rimH = large ? 16 : 14;
-  const rimBottom = large ? 58 : 52;
+  // Body/rim size scale per pot shape (e.g. "Round" is scaled taller/
+  // narrower than the shared default so it actually reads as round instead
+  // of a flat oval) — everything below derives from these two, so the stem,
+  // rim, and face all stay correctly placed for whichever shape is active.
+  const { potW, potH, rimW, rimH, rimBottom, stemBottom } = potMetrics(potShape, large);
+  const stemHeight = large ? Math.round(stemH) : 78;
+  const boxH = stemBottom + stemHeight + (large ? 46 : 40);
   const eyeW = large ? 9 : 7;
   const eyeH = large ? 11 : 9;
-  const eyeRowW = large ? 50 : 44;
-  const eyeBottom = large ? 36 : 32;
-  const mouthBottom = large ? 18 : 17;
-  const mouthW = large ? 18 : 13;
+  const eyeRowW = Math.round(potW * (large ? 50 / 112 : 44 / 94));
+  const eyeBottom = Math.round(potH * (large ? 36 / 66 : 32 / 60));
+  const mouthBottom = Math.round(potH * (large ? 18 / 66 : 17 / 60));
+  const mouthW = Math.round(potW * (large ? 18 / 112 : 13 / 94));
   const mouthH = large ? 9 : 7;
 
   return (

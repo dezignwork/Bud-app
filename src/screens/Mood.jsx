@@ -52,8 +52,8 @@ export default function Mood({ bud, theme }) {
               }}
             >
               <div style={{ height: 48, position: "relative", marginBottom: 8 }}>
-                <div style={{ position: "absolute", left: "50%", bottom: 0, width: 46, height: 32, marginLeft: -23, background: theme.pot, clipPath: shape.clip, borderRadius: shape.radius }} />
-                <div style={{ position: "absolute", left: "50%", bottom: 28, width: 52, height: 7, marginLeft: -26, background: theme.pot, clipPath: shape.rimClip, borderRadius: shape.rimRadius, transform: shape.rimT === "none" ? undefined : shape.rimT }} />
+                <div style={{ position: "absolute", left: "50%", bottom: 0, width: 46 * (shape.widthScale ?? 1), height: 32 * (shape.heightScale ?? 1), marginLeft: -23 * (shape.widthScale ?? 1), background: theme.pot, clipPath: shape.clip, borderRadius: shape.radius }} />
+                <div style={{ position: "absolute", left: "50%", bottom: 28 * (shape.heightScale ?? 1), width: 52 * (shape.rimWidthScale ?? 1), height: 7 * (shape.rimHeightScale ?? 1), marginLeft: -26 * (shape.rimWidthScale ?? 1), background: theme.pot, clipPath: shape.rimClip, borderRadius: shape.rimRadius, transform: shape.rimT === "none" ? undefined : shape.rimT }} />
               </div>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: -0.3 }}>{shape.name}</div>
             </div>
