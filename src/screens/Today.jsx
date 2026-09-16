@@ -46,8 +46,8 @@ function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerD
   );
 }
 
-const DropIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+const DropIcon = ({ filled }) => (
+  <svg width="22" height="22" viewBox="0 0 20 20" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M10 2.4c3 3.6 5.2 6.4 5.2 9a5.2 5.2 0 0 1-10.4 0c0-2.6 2.2-5.4 5.2-9Z" />
   </svg>
 );
@@ -69,7 +69,7 @@ export default function Today({ bud, theme }) {
   // below its `bottom`-anchored origin at default scale, and its handle
   // extends a further ~30px above that emission point, both added back in
   // so the whole can silhouette — not just the spray tip — clears the top.
-  const canBottom = Math.round(PLANK_LIFT + stemBottom + stemH + 46 + 59 + 30);
+  const canBottom = Math.round(PLANK_LIFT + stemBottom + stemH + 46 + 59 + 75);
 
   const keepW = (state.sw === "keep" ? 68 + state.swX : 68) + "px";
   const waterW = (state.sw === "water" ? 68 + state.swX : 68) + "px";
@@ -127,7 +127,7 @@ export default function Today({ bud, theme }) {
             <ActionTab
               theme={theme} active={state.sw === "water"} width={waterW}
               labelOpacity={state.sw === "water" && state.swX > 30 ? 1 : 0} label={state.rain ? "Watering…" : "Water me!"}
-              icon={<DropIcon />} disabledOpacity={state.rain ? 0.55 : 1}
+              icon={<DropIcon filled={state.rain} />} disabledOpacity={state.rain ? 0.55 : 1}
               onPointerDown={waterDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
             />
           </div>

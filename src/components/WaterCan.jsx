@@ -33,7 +33,7 @@ const sprayKeyframes = SPRAY_PATHS.map((p, i) => {
 }).join("\n");
 
 const CSS = `
-@keyframes wcRide{0%,5%{transform:translateX(-250px) rotate(14deg)}22%,70%{transform:translateX(0) rotate(0deg)}90%,100%{transform:translateX(-250px) rotate(14deg)}}
+@keyframes wcRide{0%,5%{transform:translateX(-320px) rotate(14deg)}22%,70%{transform:translateX(0) rotate(0deg)}90%,100%{transform:translateX(-320px) rotate(14deg)}}
 @keyframes wcTilt{0%,25%{transform:rotate(0deg)}33%,63%{transform:rotate(26deg)}72%,100%{transform:rotate(0deg)}}
 @keyframes wcUntilt{0%,25%{transform:rotate(0deg)}33%,63%{transform:rotate(-26deg)}72%,100%{transform:rotate(0deg)}}
 @keyframes wcPour{0%,34%{opacity:0}37%,60%{opacity:1}63%,100%{opacity:0}}
@@ -63,11 +63,18 @@ export default function WaterCan({ active, bottom, scale = 0.52 }) {
   const anim = (name, timing) => `${name} ${dur} ${timing} 1 both`;
 
   return (
-    <div style={{ position: "absolute", left: "50%", bottom, marginLeft: -230 * scale, zIndex: 4, pointerEvents: "none" }}>
+    <div style={{ position: "absolute", left: "50%", bottom, marginLeft: -280 * scale, zIndex: 4, pointerEvents: "none" }}>
       <style>{CSS}</style>
-      <div style={{ position: "absolute", left: 0, top: 0, width: 0, height: 0, transform: `scale(${scale})`, transformOrigin: "top left" }}>
-        {/* rides in from the left, then back out */}
-        <div style={{ position: "absolute", left: 0, top: 0, width: 0, height: 0, animation: anim("wcRide", EASE) }}>
+      {/* Rides in from the left, then back out. This has to sit OUTSIDE the
+          scale wrapper below — the reference this was ported from relied on
+          an outer overflow:hidden box sized to just clip the "off-screen"
+          state locally, which we don't have here, so translateX needs to
+          mean real screen pixels. Nested inside the 0.52 scale transform
+          instead, -250px only ever moved ~130px on screen — less than the
+          can's own rendered width — so it never actually left view; it just
+          looked stuck at the edge on both the way in and the way out. */}
+      <div style={{ position: "absolute", left: 0, top: 0, width: 0, height: 0, animation: anim("wcRide", EASE) }}>
+        <div style={{ position: "absolute", left: 0, top: 0, width: 0, height: 0, transform: `scale(${scale})`, transformOrigin: "top left" }}>
           {/* tilts to pour */}
           <div style={{ position: "absolute", left: 0, top: 70, width: 340, height: 160, transformOrigin: "44% 56%", animation: anim("wcTilt", EASE) }}>
             {/* handle */}
