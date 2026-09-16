@@ -1,8 +1,8 @@
 // A plain wooden shelf with bookend posts (screwed in at both ends),
-// standing books, and a stack of lying books topped with a cup of pens and
-// a paintbrush. Bleeds -28px past its container's sides to reach the screen
-// edges (cancelling Today's own 28px side padding), but the plank itself
-// stays inset from that.
+// standing books, and a stack of lying books topped with a cup holding a
+// pencil, a pen, and a marker. Bleeds -28px past its container's sides to
+// reach the screen edges (cancelling Today's own 28px side padding), but
+// the plank itself stays inset from that.
 export default function ShelfScene({ theme }) {
   const { ink, leaf, chip, pot, card, desk, deskDark } = theme;
 
@@ -42,13 +42,13 @@ export default function ShelfScene({ theme }) {
     { left: 101, width: 21, height: 94, bg: pot, rotate: -4 },
   ];
 
-  // Stack of 4 lying books, narrowing toward the top, each a bit darker/
-  // lighter than its neighbor for contrast.
+  // Stack of 4 lying books, as thick and clearly-defined as the standing
+  // ones — just arranged flat instead of upright.
   const stack = [
-    { width: 58, height: 11, bg: pot },
-    { width: 51, height: 10, bg: chip },
-    { width: 45, height: 10, bg: leaf },
-    { width: 38, height: 9, bg: chip },
+    { width: 62, height: 18, bg: pot },
+    { width: 54, height: 16, bg: chip },
+    { width: 47, height: 15, bg: leaf },
+    { width: 40, height: 14, bg: chip },
   ];
   let stackY = plankTop;
   const stackRight = 62;
@@ -59,8 +59,13 @@ export default function ShelfScene({ theme }) {
   });
   const stackTopY = stackY; // surface the cup rests on
 
-  const cupHeight = 26;
-  const penBottom = stackTopY + cupHeight - 8; // sunk 8px below the cup's rim, not below the cup itself
+  // Cup centered on the top (narrowest) book, not off toward the post.
+  const topBookWidth = stack[stack.length - 1].width;
+  const cupWidth = 34;
+  const cupHeight = 28;
+  const cupRight = stackRight + topBookWidth / 2 - cupWidth / 2;
+  const toolCenter = stackRight + topBookWidth / 2;
+  const toolBottom = stackTopY + cupHeight - 9; // sunk below the cup's rim, not below the cup itself
 
   return (
     <div style={{ position: "absolute", left: -28, right: -28, bottom: 0, height: 260, pointerEvents: "none" }}>
@@ -90,29 +95,26 @@ export default function ShelfScene({ theme }) {
       {/* a stack of 4 books lying flat, topped with the cup */}
       {stackTops.map((b, i) => (
         <div key={i} style={{ position: "absolute", right: stackRight, bottom: b.bottom, width: b.width, height: b.height, background: b.bg, borderRadius: 3 }}>
-          <div style={{ position: "absolute", left: 6, right: 6, top: 1, height: 1.5, background: card, opacity: 0.5, borderRadius: 1 }} />
+          <div style={{ position: "absolute", left: 5, top: 2, bottom: 2, width: 2.5, background: card, opacity: 0.5, borderRadius: 1 }} />
+          <div style={{ position: "absolute", left: 0, right: 0, top: 1.5, height: 1.5, background: "rgba(0,0,0,.14)" }} />
         </div>
       ))}
 
-      {/* a cup of pens and a paintbrush, resting on top of the stack */}
-      <div style={{ position: "absolute", right: stackRight - 5, bottom: stackTopY, width: 28, height: cupHeight, background: pot, borderRadius: "5px 5px 11px 11px" }} />
-      <div
-        style={{
-          position: "absolute", right: stackRight + 2, bottom: penBottom, width: 4, height: 32, borderRadius: 2,
-          background: `linear-gradient(to bottom, ${chip} 0 7px, ${leaf} 7px 100%)`,
-          transform: "rotate(6deg)", transformOrigin: "bottom center",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute", right: stackRight - 6, bottom: penBottom + 1, width: 4, height: 34, borderRadius: 2,
-          background: `linear-gradient(to bottom, ${leaf} 0 7px, ${pot} 7px 100%)`,
-          transform: "rotate(-7deg)", transformOrigin: "bottom center",
-        }}
-      />
-      {/* paintbrush: wooden handle + a bristle head flush against its top */}
-      <div style={{ position: "absolute", right: stackRight - 15, bottom: penBottom, width: 4, height: 36, borderRadius: 2, background: desk, transform: "rotate(10deg)", transformOrigin: "bottom center" }} />
-      <div style={{ position: "absolute", right: stackRight - 17, bottom: penBottom + 33, width: 9, height: 13, borderRadius: "50% 50% 30% 30%", background: deskDark, transform: "rotate(10deg)", transformOrigin: "bottom center" }} />
+      {/* a cylindrical cup, centered on the stack, holding a pencil/pen/marker */}
+      <div style={{ position: "absolute", right: cupRight, bottom: stackTopY, width: cupWidth, height: cupHeight, background: pot, borderRadius: "3px 3px 7px 7px" }} />
+      <div style={{ position: "absolute", right: cupRight + 2, bottom: stackTopY + cupHeight - 5, width: cupWidth - 4, height: 3, background: card, opacity: 0.5, borderRadius: 2 }} />
+
+      {/* pencil: thin shaft with a pointed wood-tone tip */}
+      <div style={{ position: "absolute", right: toolCenter - 3, bottom: toolBottom, width: 3, height: 26, borderRadius: 1.5, background: chip, transform: "rotate(-9deg)", transformOrigin: "bottom center" }} />
+      <div style={{ position: "absolute", right: toolCenter - 4, bottom: toolBottom + 25, width: 0, height: 0, borderLeft: "2.5px solid transparent", borderRight: "2.5px solid transparent", borderBottom: `7px solid ${desk}`, transform: "rotate(-9deg)", transformOrigin: "bottom center" }} />
+
+      {/* pen: shaft with a capped top */}
+      <div style={{ position: "absolute", right: toolCenter + 3, bottom: toolBottom + 1, width: 3.5, height: 30, borderRadius: 1.5, background: leaf, transform: "rotate(7deg)", transformOrigin: "bottom center" }} />
+      <div style={{ position: "absolute", right: toolCenter + 2.5, bottom: toolBottom + 30, width: 5, height: 8, borderRadius: "2px 2px 1px 1px", background: chip, transform: "rotate(7deg)", transformOrigin: "bottom center" }} />
+
+      {/* marker: chunkier shaft with a flat cap */}
+      <div style={{ position: "absolute", right: toolCenter - 9, bottom: toolBottom, width: 5, height: 24, borderRadius: 1.5, background: pot, transform: "rotate(2deg)", transformOrigin: "bottom center" }} />
+      <div style={{ position: "absolute", right: toolCenter - 10, bottom: toolBottom + 23, width: 6, height: 9, borderRadius: 2, background: ink, transform: "rotate(2deg)", transformOrigin: "bottom center" }} />
 
       {/* the plank, inset from the screen edges and thick */}
       <div style={{ position: "absolute", left: 22, right: 22, bottom: plankTop - deskH, height: deskH, borderRadius: 6, background: desk }} />
