@@ -52,7 +52,7 @@ export default function Meditation({ bud, theme }) {
             </div>
             <div
               onClick={beginMed}
-              style={{ display: "inline-block", padding: "15px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+              style={{ display: "inline-block", padding: "18px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
             >
               Let's start
             </div>
@@ -81,13 +81,13 @@ export default function Meditation({ bud, theme }) {
             <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "stretch" }}>
               <div
                 onClick={beginMed}
-                style={{ padding: "15px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+                style={{ padding: "18px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
               >
                 Start again
               </div>
               <div
                 onClick={endMed}
-                style={{ padding: "15px 30px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+                style={{ padding: "18px 30px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
               >
                 Back to Today
               </div>

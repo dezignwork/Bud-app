@@ -4,9 +4,17 @@ export const THEMES = {
   meadow: {
     bg: "#f8f7f4", ink: "#000000", card: "#ffffff", cardInk: "#000000",
     bubble: "#ffffff", bubbleInk: "#000000",
+    // Two distinct greens, deliberately not interchangeable: `leaf` is the
+    // brand/mascot color (stem, leaves, calendar heatmap, splash) and never
+    // used for interactive UI; `chip` is the interactive-accent color
+    // (streak badge, selected states, active toggles) and never used in the
+    // plant illustration.
     leaf: "#094020", pot: "#7a5638", potInk: "#fdf6ec",
     chip: "#98ac9f", chipInk: "#000000", btnBg: "#000000", btnFg: "#ffffff",
     ghostLine: "rgba(0,0,0,.18)",
+    // Soft elevation for plain content cards that would otherwise sit flush
+    // against the background with only a color difference to read as raised.
+    cardShadow: "0 1px 2px rgba(0,0,0,.04), 0 10px 24px rgba(0,0,0,.05)",
     desk: "#c9a876", deskDark: "#a4855c",
   },
 };

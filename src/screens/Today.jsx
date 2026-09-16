@@ -146,7 +146,7 @@ export default function Today({ bud, theme }) {
       )}
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", transform: `translateY(${state.pull}px)`, transition: state.dragging ? "none" : "transform .32s cubic-bezier(.34,1.4,.64,1)", minHeight: 0 }}>
-        <div style={{ paddingTop: 0 }}>
+        <div style={{ paddingTop: 6 }}>
           <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.5, marginBottom: 14 }}>{lineTag}</div>
           <div style={{ fontSize: 38, fontWeight: 700, letterSpacing: -2.28, lineHeight: 1.06, textWrap: "pretty" }}>{line}</div>
         </div>

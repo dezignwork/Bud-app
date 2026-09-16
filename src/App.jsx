@@ -94,7 +94,7 @@ export default function App() {
   if (!ready || !state) {
     return (
       <div style={{ minHeight: "100dvh", background: THEMES.meadow.bg, position: "relative" }}>
-        {showSplash && <Splash onDone={handleSplashDone} />}
+        {showSplash && <Splash onDone={handleSplashDone} theme={THEMES.meadow} />}
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function App() {
         <Onboarding bud={bud} theme={theme} dailyCheckIn={state.screen === "daily-mood"} />
       ) : (
         <>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 26px 14px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 28px 14px" }}>
             <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: -0.4 }}>
               {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </div>
@@ -146,7 +146,7 @@ export default function App() {
       )}
 
       {state.med && <Meditation bud={bud} theme={theme} />}
-      {showSplash && <Splash onDone={handleSplashDone} />}
+      {showSplash && <Splash onDone={handleSplashDone} theme={theme} />}
     </div>
   );
 }

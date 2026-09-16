@@ -30,7 +30,7 @@ export default function Journal({ bud, theme }) {
         </div>
       </div>
 
-      <div style={{ background: theme.card, color: theme.cardInk, borderRadius: 32, padding: "22px 24px 18px", marginBottom: 16 }}>
+      <div style={{ background: theme.card, color: theme.cardInk, borderRadius: 32, padding: "22px 24px 18px", marginBottom: 16, boxShadow: theme.cardShadow }}>
         <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.5, marginBottom: 10 }}>{journalDate}</div>
         <textarea
           value={state.draft}
@@ -46,13 +46,13 @@ export default function Journal({ bud, theme }) {
           <div style={{ flex: 1, fontSize: 11, fontWeight: 400, opacity: 0.5 }}>{wordCount}</div>
           <div
             onClick={clearEntry}
-            style={{ padding: "8px 15px", borderRadius: 999, boxShadow: `inset 0 0 0 1.5px ${theme.chip}`, color: theme.cardInk, fontSize: 13, fontWeight: 600, cursor: "pointer", opacity: actionOpacity, transition: "opacity .16s ease, transform .16s ease" }}
+            style={{ padding: "9px 18px", borderRadius: 999, boxShadow: `inset 0 0 0 1.5px ${theme.chip}`, color: theme.cardInk, fontSize: 13, fontWeight: 600, cursor: "pointer", opacity: actionOpacity, transition: "opacity .16s ease, transform .16s ease" }}
           >
             Clear
           </div>
           <div
             onClick={saveEntry}
-            style={{ padding: "8px 17px", borderRadius: 999, background: chipGrad, color: theme.chipInk, fontSize: 13, fontWeight: 600, cursor: "pointer", opacity: actionOpacity, transition: "opacity .16s ease, transform .16s ease" }}
+            style={{ padding: "9px 18px", borderRadius: 999, background: chipGrad, color: theme.chipInk, fontSize: 13, fontWeight: 600, cursor: "pointer", opacity: actionOpacity, transition: "opacity .16s ease, transform .16s ease" }}
           >
             Save
           </div>
@@ -69,7 +69,7 @@ export default function Journal({ bud, theme }) {
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {state.entries.map((e, i) => (
-              <div key={i} style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: "16px 20px", display: "flex", alignItems: "center", gap: 14 }}>
+              <div key={i} style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: "16px 20px", display: "flex", alignItems: "center", gap: 14, boxShadow: theme.cardShadow }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.45, marginBottom: 6 }}>{e.d}</div>
                   <div style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.35 }}>{e.t}</div>

@@ -59,7 +59,7 @@ export default function Onboarding({ bud, theme, dailyCheckIn = false }) {
         <button
           onClick={onCta}
           style={{
-            width: "100%", boxSizing: "border-box", textAlign: "center", padding: "20px 32px", borderRadius: 999,
+            width: "100%", boxSizing: "border-box", textAlign: "center", padding: "18px 30px", borderRadius: 999,
             background: theme.btnBg, color: theme.btnFg, fontSize: 16, fontWeight: 600,
             cursor: "pointer", border: "none", transition: "opacity .16s ease, transform .16s ease",
           }}

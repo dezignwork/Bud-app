@@ -12,7 +12,7 @@ const TABS = [
 // Each tab is a label over a small leaf-shaped dot that fills in when active.
 export default function TabBar({ theme, screen, onGo, justSaved }) {
   return (
-    <div style={{ display: "flex", gap: 6, padding: "0 26px 24px" }}>
+    <div style={{ display: "flex", gap: 6, padding: "0 28px 24px" }}>
       {TABS.map(([key, name]) => {
         const active = screen === key;
         return (

@@ -32,7 +32,7 @@ export default function Grove({ bud, theme }) {
     <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
       <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1, marginBottom: 22 }}>{name}’s grove</div>
 
-      <div style={{ background: theme.card, borderRadius: 40, padding: "26px 24px", marginBottom: 18 }}>
+      <div style={{ background: theme.card, borderRadius: 40, padding: "26px 24px", marginBottom: 18, boxShadow: theme.cardShadow }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>
           <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, color: theme.cardInk }}>{monthLabel}</div>
           <div style={{ fontSize: 11, fontWeight: 600, color: theme.cardInk, opacity: 0.45 }}>{openCount} of {total} days</div>
@@ -59,13 +59,13 @@ export default function Grove({ bud, theme }) {
       </div>
 
       {state.saved.length === 0 ? (
-        <div style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: 20, fontSize: 15, fontWeight: 400, lineHeight: 1.35, opacity: 0.7 }}>
+        <div style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: 20, fontSize: 15, fontWeight: 400, lineHeight: 1.35, opacity: 0.7, boxShadow: theme.cardShadow }}>
           Nothing kept yet. Tap “Keep” on a line you'd like to come back to.
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {state.saved.map((line) => (
-            <div key={line} style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: "16px 20px", display: "flex", justifyContent: "space-between", gap: 14, alignItems: "center" }}>
+            <div key={line} style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: "16px 20px", display: "flex", justifyContent: "space-between", gap: 14, alignItems: "center", boxShadow: theme.cardShadow }}>
               <span style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.25 }}>{line}</span>
               {state.editingSaved && (
                 <div

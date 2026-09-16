@@ -63,7 +63,7 @@ export default function Mood({ bud, theme }) {
 
       <div
         onClick={editName}
-        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10, cursor: "pointer", transition: "opacity .16s ease" }}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10, cursor: "pointer", transition: "opacity .16s ease", boxShadow: theme.cardShadow }}
       >
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
           <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, lineHeight: 1.2, overflowWrap: "anywhere" }}>Bud calls you {name}</div>
@@ -72,7 +72,7 @@ export default function Mood({ bud, theme }) {
         <div style={{ flex: "none", fontSize: 11, fontWeight: 600, opacity: 0.45 }}>EDIT</div>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10, boxShadow: theme.cardShadow }}>
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
           <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, lineHeight: 1.2 }}>Kept this month</div>
           <div style={{ fontSize: 13, fontWeight: 400, opacity: 0.6, lineHeight: 1.3 }}>{storageNote}</div>

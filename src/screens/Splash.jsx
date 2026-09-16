@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
  * (already mounted, not animating in). Timings/easings match the spec
  * exactly — see the keyframes in index.css (spDot/spLeaf/spOut/spOutFade).
  */
-export default function Splash({ onDone }) {
+export default function Splash({ onDone, theme }) {
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Splash({ onDone }) {
         // independent of the app shell's own height calc — see TabBar.jsx
         // for why that calc can briefly come up short on iOS.
         position: "fixed", inset: 0, maxWidth: 480, margin: "0 auto", zIndex: 50,
-        background: "#F8F7F4",
+        background: theme.bg,
         display: "flex", alignItems: "center", justifyContent: "center",
         animation: reduced
           ? "spOutFade 500ms cubic-bezier(.4,0,.2,1) 600ms both"
@@ -39,7 +39,7 @@ export default function Splash({ onDone }) {
     >
       <svg width="132" height="132" viewBox="0 0 64 64" fill="none" aria-hidden="true">
         <circle
-          cx="30" cy="42" r="14" fill="#094020"
+          cx="30" cy="42" r="14" fill={theme.leaf}
           style={
             reduced
               ? { opacity: 1 }
@@ -50,7 +50,7 @@ export default function Splash({ onDone }) {
           }
         />
         <path
-          d="M32 27C32 19 38 12.5 46.5 12C46.5 20 40.5 27 32 27Z" fill="#98AC9F"
+          d="M32 27C32 19 38 12.5 46.5 12C46.5 20 40.5 27 32 27Z" fill={theme.chip}
           style={
             reduced
               ? { opacity: 1 }
