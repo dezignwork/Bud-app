@@ -14,10 +14,10 @@ const PLANK_LIFT = 60;
 // the action tabs in the gap between the quote and the shelf, not across
 // the shelf's own height too.
 const SHELF_H = 260;
-// The action-tab stack's own height (3 ActionTabs at 56px + 2 gaps at
-// 11px) — half of it is the minimum center offset that keeps the stack
-// from poking up above its container's top edge once centered on it.
-const TABS_STACK_H = 56 * 3 + 11 * 2;
+// The action-tab stack's own height (2 ActionTabs at 56px + 1 gap at 11px)
+// — half of it is the minimum center offset that keeps the stack from
+// poking up above its container's top edge once centered on it.
+const TABS_STACK_H = 56 * 2 + 11;
 
 function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerDown, onPointerMove, onPointerUp, disabledOpacity }) {
   return (
@@ -46,13 +46,6 @@ function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerD
   );
 }
 
-const PlusIcon = () => (
-  <div style={{ position: "relative", width: 17, height: 17 }}>
-    <div style={{ position: "absolute", left: 0, top: 7.2, width: 17, height: 2.6, borderRadius: 2, background: "currentColor" }} />
-    <div style={{ position: "absolute", top: 0, left: 7.2, width: 2.6, height: 17, borderRadius: 2, background: "currentColor" }} />
-  </div>
-);
-
 const DropIcon = () => (
   <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M10 2.4c3 3.6 5.2 6.4 5.2 9a5.2 5.2 0 0 1-10.4 0c0-2.6 2.2-5.4 5.2-9Z" />
@@ -60,7 +53,7 @@ const DropIcon = () => (
 );
 
 export default function Today({ bud, theme }) {
-  const { state, todayLine, nameOrFriend, tapPlant, pullStart, pullMove, pullEnd, keepDown, nextDown, waterDown, swipeMove, swipeEnd } = bud;
+  const { state, todayLine, nameOrFriend, tapPlant, pullStart, pullMove, pullEnd, keepDown, waterDown, swipeMove, swipeEnd } = bud;
   const line = todayLine(state);
   const isSaved = state.saved.includes(line);
   const name = nameOrFriend(state);
@@ -69,15 +62,16 @@ export default function Today({ bud, theme }) {
   const { stemH } = plantGrowth(state.streak);
   const { stemBottom } = potMetrics(state.potShape, true);
   const msgBottom = Math.round(stemBottom + stemH + 46 + 10 + PLANK_LIFT);
-  // Where the watering can's rose (spray head) should hover: partway up the
-  // stem so the pour visibly lands on the leaves, not above the full
-  // canopy like msgBottom (calibrated for a speech bubble). WaterCan's own
-  // emission point sits ~59px below its `bottom`-anchored origin at its
-  // default scale, so that's added back in.
-  const canBottom = Math.round(PLANK_LIFT + 6 + stemBottom + stemH * 0.85 + 59);
+  // Where the watering can's rose (spray head) should hover: above the full
+  // canopy (same clearance as msgBottom) so the can's body sits clear of
+  // the leaves instead of overlapping them, with the spray falling down
+  // onto the plant from above. WaterCan's own emission point sits ~59px
+  // below its `bottom`-anchored origin at default scale, and its handle
+  // extends a further ~30px above that emission point, both added back in
+  // so the whole can silhouette — not just the spray tip — clears the top.
+  const canBottom = Math.round(PLANK_LIFT + stemBottom + stemH + 46 + 59 + 30);
 
   const keepW = (state.sw === "keep" ? 68 + state.swX : 68) + "px";
-  const nextW = (state.sw === "next" ? 68 + state.swX : 68) + "px";
   const waterW = (state.sw === "water" ? 68 + state.swX : 68) + "px";
 
   return (
@@ -119,19 +113,16 @@ export default function Today({ bud, theme }) {
               Clamped so a long (3-line) quote — which leaves a gap shorter
               than the tab stack itself — never pushes the stack up into the
               quote text; it can still spill down over the shelf art in that
-              case, which reads far better than covering copy. */}
-          <div style={{ position: "absolute", right: 0, top: `max(${TABS_STACK_H / 2}px, calc(50% - ${SHELF_H / 2}px))`, transform: "translateY(-50%)", zIndex: 5, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 11 }}>
+              case, which reads far better than covering copy. Bled -28px to
+              the true screen edge (same trick as ShelfScene) — these are
+              swipe-out action drawers, not margined copy, so they should sit
+              flush against the edge rather than stop short of it. */}
+          <div style={{ position: "absolute", right: -28, top: `max(${TABS_STACK_H / 2}px, calc(50% - ${SHELF_H / 2}px))`, transform: "translateY(-50%)", zIndex: 5, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 11 }}>
             <ActionTab
               theme={theme} active={state.sw === "keep"} width={keepW}
               labelOpacity={state.sw === "keep" && state.swX > 30 ? 1 : 0} label={isSaved ? "Kept" : "Keep"}
               icon={isSaved ? "♥" : "♡"}
               onPointerDown={keepDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
-            />
-            <ActionTab
-              theme={theme} active={state.sw === "next"} width={nextW}
-              labelOpacity={state.sw === "next" && state.swX > 30 ? 1 : 0} label="One more"
-              icon={<PlusIcon />}
-              onPointerDown={nextDown} onPointerMove={swipeMove} onPointerUp={swipeEnd}
             />
             <ActionTab
               theme={theme} active={state.sw === "water"} width={waterW}

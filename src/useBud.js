@@ -244,9 +244,6 @@ export default function useBud() {
     });
   }, [patch]);
 
-  // "One more" ---------------------------------------------------------
-  const next = useCallback(() => patch((s) => ({ extra: s.extra + 1, pull: 0, dragging: false })), [patch]);
-
   // Water --------------------------------------------------------------
   const water = useCallback(() => {
     setState((s) => {
@@ -294,7 +291,7 @@ export default function useBud() {
     });
   }, []);
 
-  // Swipeable action tabs (Keep / One more / Water) ------------------------
+  // Swipeable action tabs (Keep / Water) ------------------------------------
   const swipeDown = useCallback((which) => (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -318,11 +315,10 @@ export default function useBud() {
       if (trigger) {
         if (w === "keep") setTimeout(() => save(todayLine(s)), 0);
         else if (w === "water") setTimeout(() => water(), 0);
-        else setTimeout(() => next(), 0);
       }
       return { ...s, sw: null, swX: 0 };
     });
-  }, [save, water, next, todayLine]);
+  }, [save, water, todayLine]);
 
   const goScreen = useCallback((key) => {
     patch({ screen: key });
@@ -333,9 +329,9 @@ export default function useBud() {
     ready, state, patch, hello, goScreen,
     todayLine, nameOrFriend,
     setName, pickMood, obNext, finishDailyCheckIn, replayIntro, editName,
-    tapPlant, save, next, water,
+    tapPlant, save, water,
     pullStart, pullMove, pullEnd,
-    keepDown: swipeDown("keep"), nextDown: swipeDown("next"), waterDown: swipeDown("water"),
+    keepDown: swipeDown("keep"), waterDown: swipeDown("water"),
     swipeMove, swipeEnd,
     setPotShape,
     toggleEditSaved, removeSaved,
