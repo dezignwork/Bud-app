@@ -7,8 +7,9 @@ import { TailBubble } from "../components/SpeechBubble";
 // How far the plant is lifted off the container's bottom to rest on top of
 // the shelf's plank, rather than floating on plain ground. Plant's own box
 // has 6px of built-in bottom padding, so the actual lift is 6px less than
-// the plank's surface height (58px) or the pot would hover just above it.
-const PLANK_LIFT = 52;
+// the plank's surface height (66px, matching ShelfScene's plankTop) or the
+// pot would hover just above it.
+const PLANK_LIFT = 60;
 
 function Droplets({ theme, rainN }) {
   const drops = useMemo(() => {
