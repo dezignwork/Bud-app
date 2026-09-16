@@ -143,10 +143,6 @@ export default function Today({ bud, theme }) {
         <div style={{ paddingTop: 0 }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.6, opacity: 0.5, marginBottom: 14 }}>{lineTag}</div>
           <div style={{ fontSize: 38, fontWeight: 700, letterSpacing: -2.28, lineHeight: 1.06, textWrap: "pretty" }}>{line}</div>
-          <div style={{ display: "flex", gap: 6, alignItems: "center", marginTop: 18 }}>
-            <div style={{ width: 10, height: 10, borderRadius: "100% 0 100% 0", background: theme.leaf }} />
-            <div style={{ width: 6, height: 6, borderRadius: "100% 0 100% 0", background: theme.leaf, opacity: 0.5 }} />
-          </div>
         </div>
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
