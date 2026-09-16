@@ -63,7 +63,7 @@ export default function WaterCan({ active, bottom, scale = 0.52 }) {
   const anim = (name, timing) => `${name} ${dur} ${timing} 1 both`;
 
   return (
-    <div style={{ position: "absolute", left: "50%", bottom, marginLeft: -330 * scale, zIndex: 4, pointerEvents: "none" }}>
+    <div style={{ position: "absolute", left: "50%", bottom, marginLeft: -390 * scale, zIndex: 4, pointerEvents: "none" }}>
       <style>{CSS}</style>
       {/* Rides in from the left, then back out. This has to sit OUTSIDE the
           scale wrapper below — the reference this was ported from relied on

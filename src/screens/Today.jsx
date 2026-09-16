@@ -29,17 +29,21 @@ function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerD
       onTouchStart={(e) => e.stopPropagation()}
       onTouchEnd={(e) => e.stopPropagation()}
       style={{
-        position: "relative", height: 56, width, boxSizing: "border-box", background: theme.chip, color: theme.chipInk,
+        position: "relative", height: 56, width, boxSizing: "border-box",
         borderRadius: "999px 0 0 999px", display: "flex", alignItems: "center", justifyContent: "flex-start",
         paddingLeft: 6, overflow: "hidden", cursor: "pointer", touchAction: "none",
         transition: active ? "none" : "width .3s cubic-bezier(.34,1.3,.64,1)",
-        opacity: disabledOpacity ?? 1,
       }}
     >
-      <div style={{ flex: "none", width: 44, height: 44, borderRadius: 999, background: theme.card, color: theme.cardInk, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, lineHeight: 1 }}>
+      {/* Dimming for the disabled state lives on this background layer alone,
+          not the whole tab — the icon circle sits above it at full opacity
+          so the drop's fill stays exactly as dark as the heart's while
+          watering, instead of washing out to grey. */}
+      <div style={{ position: "absolute", inset: 0, background: theme.chip, opacity: disabledOpacity ?? 1 }} />
+      <div style={{ position: "relative", zIndex: 1, flex: "none", width: 44, height: 44, borderRadius: 999, background: theme.card, color: theme.cardInk, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, lineHeight: 1 }}>
         {icon}
       </div>
-      <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: -0.3, whiteSpace: "nowrap", marginLeft: 10, opacity: labelOpacity, transition: "opacity .16s ease" }}>
+      <div style={{ position: "relative", zIndex: 1, fontSize: 13, fontWeight: 600, color: theme.chipInk, letterSpacing: -0.3, whiteSpace: "nowrap", marginLeft: 10, opacity: labelOpacity * (disabledOpacity ?? 1), transition: "opacity .16s ease" }}>
         {label}
       </div>
     </div>
