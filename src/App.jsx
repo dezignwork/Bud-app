@@ -10,9 +10,13 @@ import Meditation from "./screens/Meditation";
 import Splash from "./screens/Splash";
 import TabBar from "./components/TabBar";
 
+// Matches TabBar's own tab order — swiping steps forward/back through this.
+const TAB_ORDER = ["today", "grove", "journal", "themes"];
+
 export default function App() {
   const bud = useBud();
   const { ready, state, goScreen, hello } = bud;
+  const swipeRef = useRef({ x0: 0, y0: 0 });
 
   // ?skipSplash bypasses the launch animation — for design work and tests.
   const skipSplash = useMemo(() => {
@@ -59,6 +63,23 @@ export default function App() {
     document.addEventListener("visibilitychange", onVisibility);
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [skipSplash]);
+
+  // Swipe left/right anywhere in the screen content to step to the
+  // next/previous tab, in the same order they appear in the nav bar.
+  const onContentTouchStart = (e) => {
+    const t = e.touches[0];
+    swipeRef.current = { x0: t.clientX, y0: t.clientY };
+  };
+  const onContentTouchEnd = (e) => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - swipeRef.current.x0;
+    const dy = t.clientY - swipeRef.current.y0;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    const idx = TAB_ORDER.indexOf(state.screen);
+    if (idx === -1) return;
+    if (dx < 0 && idx < TAB_ORDER.length - 1) goScreen(TAB_ORDER[idx + 1]);
+    else if (dx > 0 && idx > 0) goScreen(TAB_ORDER[idx - 1]);
+  };
 
   const handleSplashDone = () => {
     setShowSplash(false);
@@ -110,7 +131,12 @@ export default function App() {
 
           <TabBar theme={theme} screen={state.screen} onGo={goScreen} justSaved={state.justSaved} />
 
-          <div key={state.screen} style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0, animation: "screenIn .48s cubic-bezier(.22,1,.36,1) both" }}>
+          <div
+            key={state.screen}
+            onTouchStart={onContentTouchStart}
+            onTouchEnd={onContentTouchEnd}
+            style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0, animation: "screenIn .48s cubic-bezier(.22,1,.36,1) both" }}
+          >
             {state.screen === "today" && <Today bud={bud} theme={theme} />}
             {state.screen === "grove" && <Grove bud={bud} theme={theme} />}
             {state.screen === "journal" && <Journal bud={bud} theme={theme} />}
