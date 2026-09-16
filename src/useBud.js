@@ -275,12 +275,15 @@ export default function useBud() {
     setState((s) => {
       if (!s.dragging) return s;
       const d = e.clientY - dragRef.current.y0;
-      return { ...s, pull: d > 0 ? Math.min(d * 0.55, 96) : 0 };
+      // Capped well below the old 96px: the shelf now rests close to the
+      // screen's true bottom edge, so a long pull has little room to travel
+      // before it'd start sliding the plank off the visible area.
+      return { ...s, pull: d > 0 ? Math.min(d * 0.55, 45) : 0 };
     });
   }, []);
   const pullEnd = useCallback(() => {
     setState((s) => {
-      if (s.pull > 62) {
+      if (s.pull > 29) {
         return { ...s, extra: s.extra + 1, pull: 0, dragging: false };
       }
       return { ...s, pull: 0, dragging: false };
