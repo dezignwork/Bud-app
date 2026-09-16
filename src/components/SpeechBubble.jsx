@@ -44,7 +44,7 @@ export function PopBubble({ theme, title, body, tailSide = "top" }) {
       }}
     >
       <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: -1.2, lineHeight: 1.15 }}>{title}</div>
-      {body && <div style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.4, marginTop: 8, opacity: 0.72 }}>{body}</div>}
+      {body && <div style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.4, marginTop: 8, opacity: 0.72 }}>{body}</div>}
       <div
         style={{
           position: "absolute", left: "50%", top: tailSide === "top" ? -7 : "auto", bottom: tailSide === "bottom" ? -7 : "auto",

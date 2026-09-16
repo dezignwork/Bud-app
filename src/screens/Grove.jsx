@@ -34,12 +34,12 @@ export default function Grove({ bud, theme }) {
 
       <div style={{ background: theme.card, borderRadius: 40, padding: "26px 24px", marginBottom: 18 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>
-          <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: -0.5, color: theme.cardInk }}>{monthLabel}</div>
-          <div style={{ fontSize: 12, fontWeight: 700, color: theme.cardInk, opacity: 0.45 }}>{openCount} of {total} days</div>
+          <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, color: theme.cardInk }}>{monthLabel}</div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: theme.cardInk, opacity: 0.45 }}>{openCount} of {total} days</div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 6, marginBottom: 8 }}>
           {WEEKDAYS.map((w, i) => (
-            <div key={i} style={{ textAlign: "center", fontSize: 10, fontWeight: 700, color: theme.cardInk, opacity: 0.4 }}>{w}</div>
+            <div key={i} style={{ textAlign: "center", fontSize: 11, fontWeight: 600, color: theme.cardInk, opacity: 0.4 }}>{w}</div>
           ))}
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 6 }}>
@@ -52,21 +52,21 @@ export default function Grove({ bud, theme }) {
       </div>
 
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.6, opacity: 0.5 }}>LINES YOU KEPT</div>
-        <div onClick={toggleEditSaved} style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, cursor: "pointer", transition: "opacity .16s ease" }}>
+        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.5 }}>LINES YOU KEPT</div>
+        <div onClick={toggleEditSaved} style={{ fontSize: 11, fontWeight: 600, opacity: 0.5, cursor: "pointer", transition: "opacity .16s ease" }}>
           {state.editingSaved ? "DONE" : "EDIT"}
         </div>
       </div>
 
       {state.saved.length === 0 ? (
-        <div style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: 20, fontSize: 14, fontWeight: 300, lineHeight: 1.35, opacity: 0.7 }}>
+        <div style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: 20, fontSize: 15, fontWeight: 400, lineHeight: 1.35, opacity: 0.7 }}>
           Nothing kept yet. Tap “Keep” on a line you'd like to come back to.
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {state.saved.map((line) => (
             <div key={line} style={{ background: theme.card, color: theme.cardInk, borderRadius: 20, padding: "16px 20px", display: "flex", justifyContent: "space-between", gap: 14, alignItems: "center" }}>
-              <span style={{ fontSize: 15, fontWeight: 300, lineHeight: 1.25 }}>{line}</span>
+              <span style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.25 }}>{line}</span>
               {state.editingSaved && (
                 <div
                   onClick={() => removeSaved(line)}

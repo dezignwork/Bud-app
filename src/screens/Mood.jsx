@@ -15,7 +15,7 @@ export default function Mood({ bud, theme }) {
   return (
     <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
       <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1, marginBottom: 6 }}>How are you today?</div>
-      <div style={{ fontSize: 15, fontWeight: 300, lineHeight: 1.25, opacity: 0.7, marginBottom: 20 }}>Pick a mood and your line changes to match.</div>
+      <div style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.25, opacity: 0.7, marginBottom: 20 }}>Pick a mood and your line changes to match.</div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 9, marginBottom: 30 }}>
         {MOODS.map((m) => {
@@ -37,7 +37,7 @@ export default function Mood({ bud, theme }) {
         })}
       </div>
 
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.6, opacity: 0.5, marginBottom: 12 }}>POT SHAPE</div>
+      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.5, marginBottom: 12 }}>POT SHAPE</div>
       <div style={{ display: "flex", gap: 10, marginBottom: 26 }}>
         {Object.entries(POT_SHAPES).map(([key, shape]) => {
           const active = state.potShape === key;
@@ -55,7 +55,7 @@ export default function Mood({ bud, theme }) {
                 <div style={{ position: "absolute", left: "50%", bottom: 0, width: 46 * (shape.widthScale ?? 1), height: 32 * (shape.heightScale ?? 1), marginLeft: -23 * (shape.widthScale ?? 1), background: theme.pot, clipPath: shape.clip, borderRadius: shape.radius }} />
                 <div style={{ position: "absolute", left: "50%", bottom: 28 * (shape.heightScale ?? 1), width: 52 * (shape.rimWidthScale ?? 1), height: 7 * (shape.rimHeightScale ?? 1), marginLeft: -26 * (shape.rimWidthScale ?? 1), background: theme.pot, clipPath: shape.rimClip, borderRadius: shape.rimRadius, transform: shape.rimT === "none" ? undefined : shape.rimT }} />
               </div>
-              <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: -0.3 }}>{shape.name}</div>
+              <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: -0.3 }}>{shape.name}</div>
             </div>
           );
         })}
@@ -66,23 +66,23 @@ export default function Mood({ bud, theme }) {
         style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10, cursor: "pointer", transition: "opacity .16s ease" }}
       >
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
-          <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: -0.5, lineHeight: 1.2, overflowWrap: "anywhere" }}>Bud calls you {name}</div>
-          <div style={{ fontSize: 12.5, fontWeight: 300, opacity: 0.6, lineHeight: 1.2 }}>Change your name</div>
+          <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, lineHeight: 1.2, overflowWrap: "anywhere" }}>Bud calls you {name}</div>
+          <div style={{ fontSize: 13, fontWeight: 400, opacity: 0.6, lineHeight: 1.2 }}>Change your name</div>
         </div>
-        <div style={{ flex: "none", fontSize: 11, fontWeight: 700, opacity: 0.45 }}>EDIT</div>
+        <div style={{ flex: "none", fontSize: 11, fontWeight: 600, opacity: 0.45 }}>EDIT</div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10 }}>
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
-          <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: -0.5, lineHeight: 1.2 }}>Kept this month</div>
-          <div style={{ fontSize: 12.5, fontWeight: 300, opacity: 0.6, lineHeight: 1.3 }}>{storageNote}</div>
+          <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, lineHeight: 1.2 }}>Kept this month</div>
+          <div style={{ fontSize: 13, fontWeight: 400, opacity: 0.6, lineHeight: 1.3 }}>{storageNote}</div>
         </div>
-        <div style={{ flex: "none", fontSize: 11, fontWeight: 700, opacity: 0.45 }}>{storageMonth}</div>
+        <div style={{ flex: "none", fontSize: 11, fontWeight: 600, opacity: 0.45 }}>{storageMonth}</div>
       </div>
 
       <div
         onClick={replayIntro}
-        style={{ textAlign: "center", padding: 16, borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 15, fontWeight: 400, cursor: "pointer", transition: "opacity .16s ease" }}
+        style={{ textAlign: "center", padding: 16, borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "opacity .16s ease" }}
       >
         Replay the intro
       </div>

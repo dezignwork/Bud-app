@@ -64,7 +64,7 @@ function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerD
       <div style={{ flex: "none", width: 44, height: 44, borderRadius: 999, background: theme.card, color: theme.cardInk, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, lineHeight: 1 }}>
         {icon}
       </div>
-      <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: -0.3, whiteSpace: "nowrap", marginLeft: 10, opacity: labelOpacity, transition: "opacity .16s ease" }}>
+      <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: -0.3, whiteSpace: "nowrap", marginLeft: 10, opacity: labelOpacity, transition: "opacity .16s ease" }}>
         {label}
       </div>
     </div>
@@ -110,7 +110,7 @@ export default function Today({ bud, theme }) {
         cursor: "grab", userSelect: "none", position: "relative", minHeight: 0,
       }}
     >
-      <div style={{ height: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 400, opacity: state.pull > 8 ? 1 : 0.35, transition: "opacity .16s ease" }}>
+      <div style={{ height: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 400, opacity: state.pull > 8 ? 1 : 0.35, transition: "opacity .16s ease" }}>
         {state.pull > 29 ? "let go for another" : state.pull > 8 ? "keep pulling…" : ""}
       </div>
 
@@ -147,7 +147,7 @@ export default function Today({ bud, theme }) {
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", transform: `translateY(${state.pull}px)`, transition: state.dragging ? "none" : "transform .32s cubic-bezier(.34,1.4,.64,1)", minHeight: 0 }}>
         <div style={{ paddingTop: 0 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.6, opacity: 0.5, marginBottom: 14 }}>{lineTag}</div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.5, marginBottom: 14 }}>{lineTag}</div>
           <div style={{ fontSize: 38, fontWeight: 700, letterSpacing: -2.28, lineHeight: 1.06, textWrap: "pretty" }}>{line}</div>
         </div>
 

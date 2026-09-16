@@ -47,12 +47,12 @@ export default function Meditation({ bud, theme }) {
         {medIntro && (
           <div style={{ animation: "medRise .8s cubic-bezier(.22,1,.36,1) both" }}>
             <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14, marginBottom: 22 }}>Meditation Mode</div>
-            <div style={{ fontSize: 15, fontWeight: 300, lineHeight: 1.45, opacity: 0.7, marginBottom: 34, textWrap: "pretty" }}>
+            <div style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.45, opacity: 0.7, marginBottom: 34, textWrap: "pretty" }}>
               Let's try box breathing. Four seconds in, four to hold, four out, four to rest. Start when you're ready.
             </div>
             <div
               onClick={beginMed}
-              style={{ display: "inline-block", padding: "15px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13.5, fontWeight: 700, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+              style={{ display: "inline-block", padding: "15px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
             >
               Let's start
             </div>
@@ -81,13 +81,13 @@ export default function Meditation({ bud, theme }) {
             <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "stretch" }}>
               <div
                 onClick={beginMed}
-                style={{ padding: "15px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13.5, fontWeight: 700, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+                style={{ padding: "15px 30px", borderRadius: 999, background: theme.btnBg, color: theme.btnFg, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
               >
                 Start again
               </div>
               <div
                 onClick={endMed}
-                style={{ padding: "15px 30px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13.5, fontWeight: 700, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+                style={{ padding: "15px 30px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, textAlign: "center", cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
               >
                 Back to Today
               </div>
@@ -107,7 +107,7 @@ export default function Meditation({ bud, theme }) {
         </div>
         <div
           onClick={endMed}
-          style={{ padding: "11px 22px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13.5, fontWeight: 700, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+          style={{ padding: "11px 22px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
         >
           End early
         </div>

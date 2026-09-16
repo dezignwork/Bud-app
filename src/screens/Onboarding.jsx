@@ -43,7 +43,7 @@ export default function Onboarding({ bud, theme, dailyCheckIn = false }) {
                 key={m}
                 onClick={() => pickMood(m)}
                 style={{
-                  padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 400, cursor: "pointer",
+                  padding: "10px 18px", borderRadius: 999, fontSize: 15, fontWeight: 400, cursor: "pointer",
                   background: active ? theme.chip : "transparent", color: active ? theme.chipInk : theme.ink,
                   transition: "opacity .16s ease",
                 }}
@@ -60,7 +60,7 @@ export default function Onboarding({ bud, theme, dailyCheckIn = false }) {
           onClick={onCta}
           style={{
             width: "100%", boxSizing: "border-box", textAlign: "center", padding: "20px 32px", borderRadius: 999,
-            background: theme.btnBg, color: theme.btnFg, fontSize: 16, fontWeight: 400,
+            background: theme.btnBg, color: theme.btnFg, fontSize: 16, fontWeight: 600,
             cursor: "pointer", border: "none", transition: "opacity .16s ease, transform .16s ease",
           }}
         >

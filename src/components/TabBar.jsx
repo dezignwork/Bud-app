@@ -26,7 +26,7 @@ export default function TabBar({ theme, screen, onGo, justSaved }) {
               transition: "opacity .16s ease",
             }}
           >
-            <div style={{ fontSize: 13.5, fontWeight: 700, letterSpacing: -0.3, opacity: active ? 1 : 0.45, transition: "opacity .16s ease" }}>
+            <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: -0.3, opacity: active ? 1 : 0.45, transition: "opacity .16s ease" }}>
               {name}
             </div>
             <div

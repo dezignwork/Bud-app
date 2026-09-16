@@ -117,12 +117,12 @@ export default function App() {
       ) : (
         <>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 26px 14px" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: -0.4 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: -0.4 }}>
               {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </div>
             <div
               onClick={() => goScreen("grove")}
-              style={{ display: "flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: theme.chip, color: theme.chipInk, fontSize: 13, fontWeight: 700, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease" }}
+              style={{ display: "flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: theme.chip, color: theme.chipInk, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease" }}
             >
               <span style={{ flex: "none", width: 8, height: 8, borderRadius: "100% 0 100% 0", background: "currentColor" }} />
               <span style={{ whiteSpace: "nowrap" }}>{state.streak} days</span>
