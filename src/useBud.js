@@ -253,14 +253,18 @@ export default function useBud() {
       clearTimeout(t.current.rain1);
       clearTimeout(t.current.rain2);
       clearTimeout(t.current.rain3);
+      // The thanks message waits until the watering-can animation has fully
+      // exited (it runs for exactly 3.6s, matching rain2 below) so it never
+      // overlaps the hand — it reads as Bud's reaction to being watered,
+      // not commentary mid-pour.
       t.current.rain1 = setTimeout(() => {
         patch((s2) => ({
           tapMsg: fillName(THANKS[Math.floor(Math.random() * THANKS.length)], nameOrFriend(s2)),
           msgN: s2.msgN + 1,
         }));
-      }, 1100);
+      }, 3700);
       t.current.rain2 = setTimeout(() => patch({ rain: false }), 3600);
-      t.current.rain3 = setTimeout(() => patch({ tapMsg: null }), 4400);
+      t.current.rain3 = setTimeout(() => patch({ tapMsg: null }), 6300);
       return { ...s, rain: true, rainN: s.rainN + 1 };
     });
   }, [patch]);
