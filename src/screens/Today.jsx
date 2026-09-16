@@ -51,6 +51,8 @@ function ActionTab({ theme, active, width, labelOpacity, label, icon, onPointerD
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchEnd={(e) => e.stopPropagation()}
       style={{
         position: "relative", height: 56, width, boxSizing: "border-box", background: theme.chip, color: theme.chipInk,
         borderRadius: "999px 0 0 999px", display: "flex", alignItems: "center", justifyContent: "flex-start",

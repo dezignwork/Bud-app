@@ -34,8 +34,8 @@ button { font: inherit; }
 @keyframes pop { 0% { opacity: 0; transform: translateY(6px) scale(.94); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes swish {
   0% { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
-  35% { opacity: 1; transform: translate(6px,-14px) scale(.92) rotate(-2deg); }
-  100% { opacity: 0; transform: translate(34px,600px) scale(.12) rotate(6deg); }
+  35% { opacity: 1; transform: translate(-6px,14px) scale(.92) rotate(2deg); }
+  100% { opacity: 0; transform: translate(-40px,-420px) scale(.12) rotate(-6deg); }
 }
 @keyframes tabpop { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.14); } }
 @keyframes greetdrift {
