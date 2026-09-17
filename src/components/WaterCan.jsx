@@ -13,6 +13,14 @@
 const EASE = "cubic-bezier(.45,0,.25,1)";
 const CYCLE_MS = 4500;
 
+// One flat base yellow plus color-mix'd shade/highlight derived from it —
+// the same convention Plant.jsx uses for its pot (a color-mix'd darker rim
+// over the body) and ShelfScene uses for its book page-edges/binding bands
+// — rather than the mismatched outlined-sticker palette this replaced.
+const CAN = "#f0b52c";
+const CAN_DARK = "color-mix(in oklab, #f0b52c, #000 20%)";
+const CAN_LIGHT = "color-mix(in oklab, #f0b52c, #fff 45%)";
+
 const SPRAY_PATHS = [
   { rot: [24, 9, 3, 2, 1, 1, 1, 1], x: [0, -2, -3, -5, -6, -7, -8, -9] },
   { rot: [-51, -23, -9, -5, -3, -2, -2, -2], x: [0, 5, 9, 13, 16, 19, 22, 25] },
@@ -77,28 +85,32 @@ export default function WaterCan({ active, bottom, scale = 0.52 }) {
         <div style={{ position: "absolute", left: 0, top: 0, width: 0, height: 0, transform: `scale(${scale})`, transformOrigin: "top left" }}>
           {/* tilts to pour */}
           <div style={{ position: "absolute", left: 0, top: 70, width: 340, height: 160, transformOrigin: "44% 56%", animation: anim("wcTilt", EASE) }}>
-            {/* handle */}
-            <div style={{ position: "absolute", left: 62, top: 52, width: 66, height: 76, boxSizing: "border-box", border: "11px solid #f0b52c", borderRadius: "50%", outline: "2px solid #8a5a12", outlineOffset: -1 }} />
+            {/* handle — a plain ring of the can's own material; border is the
+                only sane way to punch a hole in a div, not a decorative
+                stroke, so it carries no separate outline color */}
+            <div style={{ position: "absolute", left: 62, top: 52, width: 66, height: 76, boxSizing: "border-box", border: `12px solid ${CAN}`, borderRadius: "50%" }} />
             {/* top grip */}
-            <div style={{ position: "absolute", left: 130, top: -8, width: 92, height: 58, boxSizing: "border-box", border: "11px solid #f0b52c", borderBottom: "none", borderRadius: "48px 48px 0 0" }} />
-            <div style={{ position: "absolute", left: 130, top: -8, width: 92, height: 58, boxSizing: "border-box", border: "2px solid #8a5a12", borderBottom: "none", borderRadius: "48px 48px 0 0" }} />
-            <div style={{ position: "absolute", left: 141, top: 3, width: 70, height: 47, boxSizing: "border-box", border: "2px solid #8a5a12", borderBottom: "none", borderRadius: "36px 36px 0 0", opacity: 0.6 }} />
-            {/* body */}
-            <div style={{ position: "absolute", left: 107, top: 41, width: 138, height: 136, background: "#8a5a12", borderRadius: "10px 10px 20px 20px", clipPath: "polygon(11% 0,89% 0,100% 100%,0 100%)" }} />
-            <div style={{ position: "absolute", left: 110, top: 44, width: 132, height: 130, background: "#ffce47", borderRadius: "9px 9px 18px 18px", clipPath: "polygon(11% 0,89% 0,100% 100%,0 100%)" }} />
-            {/* rim */}
-            <div style={{ position: "absolute", left: 117, top: 32, width: 118, height: 26, boxSizing: "border-box", border: "2px solid #8a5a12", borderRadius: "50%", background: "#f0b52c" }} />
-            <div style={{ position: "absolute", left: 126, top: 38, width: 100, height: 14, borderRadius: "50%", background: "#dda017" }} />
-            <div style={{ position: "absolute", left: 119, top: 92, width: 114, height: 8, background: "#f0b52c", opacity: 0.9 }} />
+            <div style={{ position: "absolute", left: 130, top: -8, width: 92, height: 58, boxSizing: "border-box", border: `12px solid ${CAN}`, borderBottom: "none", borderRadius: "48px 48px 0 0" }} />
+            {/* body — flat fill with one lighter ridge line standing in for
+                a seam, the same trick as the shelf books' binding band */}
+            <div style={{ position: "absolute", left: 107, top: 41, width: 138, height: 136, background: CAN, borderRadius: "10px 10px 20px 20px", clipPath: "polygon(11% 0,89% 0,100% 100%,0 100%)" }}>
+              <div style={{ position: "absolute", left: 12, right: 12, top: 50, height: 5, background: CAN_LIGHT, opacity: 0.6, borderRadius: 3 }} />
+            </div>
+            {/* rim — a shade darker than the body, same convention as the pot's rim */}
+            <div style={{ position: "absolute", left: 117, top: 32, width: 118, height: 26, borderRadius: "50%", background: CAN_DARK }} />
+            <div style={{ position: "absolute", left: 126, top: 35, width: 100, height: 3, borderRadius: 2, background: CAN_LIGHT, opacity: 0.6 }} />
             {/* base */}
-            <div style={{ position: "absolute", left: 106, top: 155, width: 140, height: 19, boxSizing: "border-box", border: "2px solid #8a5a12", borderRadius: "7px 7px 17px 17px", background: "#f0b52c" }} />
+            <div style={{ position: "absolute", left: 106, top: 155, width: 140, height: 19, borderRadius: "7px 7px 17px 17px", background: CAN_DARK }} />
             {/* spout */}
-            <div style={{ position: "absolute", left: 198, top: 68, width: 126, height: 26, boxSizing: "border-box", border: "2px solid #8a5a12", borderRadius: 6, background: "#ffce47", transform: "rotate(-14deg)", transformOrigin: "left center" }} />
-            <div style={{ position: "absolute", left: 200, top: 82, width: 120, height: 9, borderRadius: 5, background: "#f0b52c", opacity: 0.75, transform: "rotate(-14deg)", transformOrigin: "left center" }} />
-            {/* rose (spout head) */}
+            <div style={{ position: "absolute", left: 198, top: 68, width: 126, height: 26, borderRadius: 6, background: CAN, transform: "rotate(-14deg)", transformOrigin: "left center" }}>
+              <div style={{ position: "absolute", left: 8, right: 8, bottom: 4, height: 3, background: CAN_DARK, opacity: 0.5, borderRadius: 2 }} />
+            </div>
+            {/* rose (spout head) — same darker-shape-behind-lighter-shape
+                layering as the pot body/rim, instead of a bordered sticker */}
             <div style={{ position: "absolute", left: 300, top: 22, width: 58, height: 62, transform: "rotate(-14deg)", transformOrigin: "left center" }}>
-              <div style={{ position: "absolute", left: 0, top: 14, width: 36, height: 32, background: "#f0b52c", clipPath: "polygon(0 30%,100% 0,100% 100%,0 70%)" }} />
-              <div style={{ position: "absolute", left: 26, top: 2, width: 28, height: 56, borderRadius: "50%", background: "#ffce47", boxSizing: "border-box", border: "5px solid #f0b52c", outline: "2px solid #8a5a12", outlineOffset: -1 }} />
+              <div style={{ position: "absolute", left: 0, top: 14, width: 36, height: 32, background: CAN, clipPath: "polygon(0 30%,100% 0,100% 100%,0 70%)" }} />
+              <div style={{ position: "absolute", left: 24, top: 0, width: 32, height: 60, borderRadius: "50%", background: CAN_DARK }} />
+              <div style={{ position: "absolute", left: 28, top: 4, width: 24, height: 52, borderRadius: "50%", background: CAN }} />
             </div>
             {/* water: counter-rotates so the stream stays vertical, fades in only while tilted */}
             <div style={{ position: "absolute", left: 338, top: 44, width: 0, height: 0, transformOrigin: "top center", animation: anim("wcUntilt", EASE) }}>
