@@ -129,7 +129,14 @@ export default function Today({ bud, theme }) {
               the true screen edge (same trick as ShelfScene) — these are
               swipe-out action drawers, not margined copy, so they should sit
               flush against the edge rather than stop short of it. */}
-          <div style={{ position: "absolute", right: -28, top: `max(${TABS_STACK_H / 2}px, calc(50% - ${SHELF_H / 2}px))`, transform: "translateY(-50%)", zIndex: 5, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 11 }}>
+          <div
+            style={{
+              position: "absolute", right: -28, top: `max(${TABS_STACK_H / 2}px, calc(50% - ${SHELF_H / 2}px))`, zIndex: 5,
+              display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 11,
+              transform: `translateY(-50%) translateX(${state.quoteSwipeX}px)`,
+              transition: state.dragging ? "none" : "transform .28s cubic-bezier(.34,1.4,.64,1)",
+            }}
+          >
             <ActionTab
               theme={theme} active={state.sw === "keep"} width={keepW}
               labelOpacity={state.sw === "keep" && state.swX > 30 ? 1 : 0} label={isSaved ? "Kept" : "Keep"}

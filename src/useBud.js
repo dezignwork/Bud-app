@@ -6,12 +6,17 @@ import { CYCLE_MS as WATER_CAN_MS } from "./components/WaterCan";
 
 const timers = () => ({});
 
+// How far the Keep/Water tabs slide right during the swipe-right-to-shuffle
+// drag — just enough for their icon circle (44px, inset 6px into a 68px-wide
+// resting pill) to reach the true screen edge.
+const TAB_SLIDE_MAX = 18;
+
 export default function useBud() {
   const [ready, setReady] = useState(false);
   const [state, setState] = useState(null);
   const t = useRef(timers());
   const tapsRef = useRef([]);
-  const dragRef = useRef({ y0: 0 });
+  const dragRef = useRef({ x0: 0, y0: 0, axis: null });
   const swipeRef = useRef({ startX: 0 });
 
   // Load persisted state once, stamp today as opened, compute streak.
@@ -33,6 +38,8 @@ export default function useBud() {
       greetN: 0,
       pull: 0,
       dragging: false,
+      quoteSwipeX: 0,
+      randomLine: null,
       flying: false,
       justSaved: false,
       sw: null,
@@ -93,6 +100,10 @@ export default function useBud() {
 
   const pool = useCallback((s) => linesForMood(s.mood), []);
   const todayLine = useCallback((s) => {
+    // A swipe-right shuffle (see pullEnd below) overrides the normal
+    // day-indexed pick with a specific random line until the mood changes
+    // or another refresh replaces it.
+    if (s.randomLine) return s.randomLine;
     const p = pool(s);
     const day = Math.floor(Date.now() / 864e5);
     return p[(day + s.extra) % p.length];
@@ -108,7 +119,7 @@ export default function useBud() {
   const setName = useCallback((name) => patch({ name }), [patch]);
   // Picking a mood — from onboarding, the daily check-in, or the Mood tab —
   // also counts as that day's check-in, so it isn't asked again today.
-  const pickMood = useCallback((mood) => patch({ mood, extra: 0, lastMoodPromptDate: dateKey() }), [patch]);
+  const pickMood = useCallback((mood) => patch({ mood, extra: 0, randomLine: null, lastMoodPromptDate: dateKey() }), [patch]);
   const obNext = useCallback(() => {
     patch((s) => {
       if (s.editingName) return { screen: "themes", editingName: false };
@@ -267,29 +278,61 @@ export default function useBud() {
     });
   }, [patch]);
 
-  // Pull-to-refresh --------------------------------------------------------
+  // Pull-to-refresh (down = next line in today's sequence) and swipe-right
+  // (= shuffle to a random line in the same mood) share one drag on Today's
+  // content, since both start the same way — a press anywhere on the quote
+  // area. The first several pixels of movement decide which axis "wins" via
+  // dragRef.axis so a diagonal-ish drag commits to just one gesture instead
+  // of doing both.
   const pullStart = useCallback((e) => {
-    dragRef.current.y0 = e.clientY;
+    dragRef.current = { x0: e.clientX, y0: e.clientY, axis: null };
     patch({ dragging: true });
   }, [patch]);
   const pullMove = useCallback((e) => {
     setState((s) => {
       if (!s.dragging) return s;
-      const d = e.clientY - dragRef.current.y0;
-      // Capped well below the old 96px: the shelf now rests close to the
-      // screen's true bottom edge, so a long pull has little room to travel
-      // before it'd start sliding the plank off the visible area.
-      return { ...s, pull: d > 0 ? Math.min(d * 0.55, 45) : 0 };
+      const dx = e.clientX - dragRef.current.x0;
+      const dy = e.clientY - dragRef.current.y0;
+      let axis = dragRef.current.axis;
+      if (!axis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        axis = Math.abs(dx) > Math.abs(dy) * 1.2 ? "h" : "v";
+        dragRef.current.axis = axis;
+      }
+      if (axis === "h") {
+        return { ...s, quoteSwipeX: dx > 0 ? Math.min(dx * 0.4, TAB_SLIDE_MAX) : 0, pull: 0 };
+      }
+      if (axis === "v") {
+        // Capped well below the old 96px: the shelf now rests close to the
+        // screen's true bottom edge, so a long pull has little room to
+        // travel before it'd start sliding the plank off the visible area.
+        return { ...s, pull: dy > 0 ? Math.min(dy * 0.55, 45) : 0, quoteSwipeX: 0 };
+      }
+      return s;
     });
   }, []);
   const pullEnd = useCallback(() => {
+    const axis = dragRef.current.axis;
+    dragRef.current.axis = null;
     setState((s) => {
+      if (axis === "h") {
+        if (s.quoteSwipeX >= TAB_SLIDE_MAX - 2 && !s.flying && !s.rain) {
+          const p = pool(s);
+          const day = Math.floor(Date.now() / 864e5);
+          const current = s.randomLine || p[(day + s.extra) % p.length];
+          let next = p[Math.floor(Math.random() * p.length)];
+          for (let guard = 0; next === current && guard < 8 && p.length > 1; guard++) {
+            next = p[Math.floor(Math.random() * p.length)];
+          }
+          return { ...s, quoteSwipeX: 0, dragging: false, randomLine: next };
+        }
+        return { ...s, quoteSwipeX: 0, dragging: false };
+      }
       if (s.pull > 29) {
-        return { ...s, extra: s.extra + 1, pull: 0, dragging: false };
+        return { ...s, extra: s.extra + 1, pull: 0, dragging: false, randomLine: null };
       }
       return { ...s, pull: 0, dragging: false };
     });
-  }, []);
+  }, [pool]);
 
   // Swipeable action tabs (Keep / Water) ------------------------------------
   const swipeDown = useCallback((which) => (e) => {
