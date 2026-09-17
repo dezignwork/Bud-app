@@ -77,6 +77,14 @@ export default function Today({ bud, theme }) {
   // extends a further ~30px above that emission point, both added back in
   // so the whole can silhouette — not just the spray tip — clears the top.
   const canBottom = Math.round(PLANK_LIFT + stemBottom + stemH + 46 + 59 + 75);
+  // Pulls the shelf/tabs cluster up to close the dead air left under a short
+  // quote — but only by however much slack this plant's own canBottom has to
+  // spare below 416 (the tallest canBottom across every streak/pot-shape
+  // combination: max-growth stem + the taller Round pot), which is the
+  // largest value confirmed not to push the watering can up into the quote.
+  // A shorter plant has more slack and gets pulled up more; the tallest
+  // plant gets none, leaving it exactly where it already safely sat.
+  const gapTighten = Math.max(0, 416 - canBottom);
 
   const keepW = (state.sw === "keep" ? 68 + state.swX : 68) + "px";
   const waterW = (state.sw === "water" ? 68 + state.swX : 68) + "px";
@@ -104,7 +112,7 @@ export default function Today({ bud, theme }) {
         </div>
       )}
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", transform: `translateY(${state.pull}px)`, transition: state.dragging ? "none" : "transform .32s cubic-bezier(.34,1.4,.64,1)", minHeight: 0 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", paddingBottom: gapTighten, transform: `translateY(${state.pull}px)`, transition: state.dragging ? "none" : "transform .32s cubic-bezier(.34,1.4,.64,1)", minHeight: 0 }}>
         <div style={{ paddingTop: 18, fontSize: 38, fontWeight: 700, letterSpacing: -2.28, lineHeight: 1.06, textWrap: "pretty" }}>{line}</div>
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
