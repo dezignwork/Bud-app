@@ -2,6 +2,21 @@ import { dateKey } from "../storage";
 
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
 
+// A tiny potted-plant flourish for the header corner — not Bud (no face),
+// just a plain little plant so this screen reads as part of the same room
+// as Today's shelf instead of a bare list on a flat background.
+function PottedCornerAccent({ theme }) {
+  return (
+    <div style={{ position: "absolute", top: 2, right: 8, width: 40, height: 50, pointerEvents: "none" }} aria-hidden="true">
+      <div style={{ position: "absolute", left: 15, top: 4, width: 4, height: 15, background: theme.leaf, borderRadius: 2 }} />
+      <div style={{ position: "absolute", left: 4, top: 2, width: 17, height: 11, background: theme.leaf, borderRadius: "100% 0 100% 0", transform: "rotate(-20deg)" }} />
+      <div style={{ position: "absolute", left: 17, top: 0, width: 19, height: 12, background: theme.leaf, borderRadius: "100% 0 100% 0", transform: "rotate(16deg)" }} />
+      <div style={{ position: "absolute", left: 2, top: 19, width: 30, height: 6, background: `color-mix(in oklab, ${theme.pot}, #000 16%)`, borderRadius: "3px 3px 0 0" }} />
+      <div style={{ position: "absolute", left: 4, top: 23, width: 26, height: 20, background: theme.pot, clipPath: "polygon(6% 0,94% 0,82% 100%,18% 100%)" }} />
+    </div>
+  );
+}
+
 function buildMonth(openedDates, theme) {
   const now = new Date();
   const y = now.getFullYear(), mo = now.getMonth();
@@ -29,7 +44,8 @@ export default function Grove({ bud, theme }) {
   const { cells, openCount, total, monthLabel } = buildMonth(state.openedDates, theme);
 
   return (
-    <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
+    <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch", position: "relative" }}>
+      <PottedCornerAccent theme={theme} />
       <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1, marginBottom: 22 }}>{name}’s grove</div>
 
       <div style={{ background: theme.card, borderRadius: 40, padding: "26px 24px", marginBottom: 18, boxShadow: theme.cardShadow }}>

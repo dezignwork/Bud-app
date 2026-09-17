@@ -4,6 +4,23 @@ const DeleteIcon = () => (
   </svg>
 );
 
+// A tiny desk-lamp flourish standing beside the draft card's top-right
+// corner — the shade pokes up above the card, the pole and base stand in
+// the margin beside it — in the same desk/deskDark wood tones as Today's
+// shelf, so Journal reads as a desk in the same room Bud lives in, not a
+// bare card on flat ground.
+function DeskLampAccent({ theme }) {
+  const glow = `radial-gradient(circle, color-mix(in oklab, ${theme.desk}, #fff 55%) 0%, transparent 72%)`;
+  return (
+    <div style={{ position: "absolute", top: 33, right: 4, width: 46, height: 46, pointerEvents: "none" }} aria-hidden="true">
+      <div style={{ position: "absolute", left: 10, top: 14, width: 32, height: 32, background: glow, opacity: 0.6 }} />
+      <div style={{ position: "absolute", left: 10, top: 0, width: 24, height: 18, background: theme.desk, clipPath: "polygon(10% 0,90% 0,100% 100%,0% 100%)" }} />
+      <div style={{ position: "absolute", left: 26, top: 14, width: 4, height: 22, background: theme.deskDark, borderRadius: 2 }} />
+      <div style={{ position: "absolute", left: 24, top: 34, width: 20, height: 6, background: theme.deskDark, borderRadius: 3 }} />
+    </div>
+  );
+}
+
 export default function Journal({ bud, theme }) {
   const { state, setDraft, clearEntry, saveEntry, togglePloon, toggleEditEntries, removeEntry } = bud;
   const wordCount = state.draft.trim() ? state.draft.trim().split(/\s+/).length + " words" : "";
@@ -15,7 +32,8 @@ export default function Journal({ bud, theme }) {
   const chipGrad = `linear-gradient(180deg, ${theme.chip}, color-mix(in oklab, ${theme.chip}, #094020 22%))`;
 
   return (
-    <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", display: "flex", flexDirection: "column" }}>
+    <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", display: "flex", flexDirection: "column", position: "relative" }}>
+      <DeskLampAccent theme={theme} />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, marginBottom: 22 }}>
         <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1 }}>Journal</div>
         <div
@@ -30,7 +48,7 @@ export default function Journal({ bud, theme }) {
         </div>
       </div>
 
-      <div style={{ background: theme.card, color: theme.cardInk, borderRadius: 32, padding: "22px 24px 18px", marginBottom: 16, boxShadow: theme.cardShadow }}>
+      <div style={{ position: "relative", zIndex: 1, background: theme.card, color: theme.cardInk, borderRadius: 32, padding: "22px 24px 18px", marginBottom: 16, boxShadow: theme.cardShadow }}>
         <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.5, marginBottom: 10 }}>{journalDate}</div>
         <textarea
           value={state.draft}
