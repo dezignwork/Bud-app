@@ -14,7 +14,11 @@ export function TailBubble({ theme, children, style, mirror = false, animKey }) 
         style={{
           background: theme.bubble, color: theme.bubbleInk, borderRadius: 18,
           padding: "11px 16px", fontSize: 15, fontWeight: 400, lineHeight: 1.25,
-          width: "fit-content", maxWidth: "100%", textWrap: "balance", boxShadow: `0 0 0 1px ${theme.ghostLine}`,
+          // No text-wrap:balance — it re-measures line breaks against the
+          // bubble's *un-shrunk* available width, so once a message needs
+          // two lines the bubble stops hugging the text and balloons out to
+          // its full maxWidth, leaving a lopsided gap next to short lines.
+          width: "fit-content", maxWidth: "100%", boxShadow: `0 0 0 1px ${theme.ghostLine}`,
         }}
       >
         {children}
