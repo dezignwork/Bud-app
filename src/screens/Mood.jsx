@@ -1,16 +1,8 @@
 import { MOODS, POT_SHAPES } from "../data";
 
 export default function Mood({ bud, theme }) {
-  const { state, pickMood, setPotShape, nameOrFriend, editName, replayIntro } = bud;
+  const { state, pickMood, setPotShape, nameOrFriend, editName } = bud;
   const name = nameOrFriend(state);
-
-  const now = new Date();
-  const nextMonthFirst = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-  const storageNote =
-    state.entries.length + (state.entries.length === 1 ? " entry" : " entries") + " and " +
-    state.saved.length + (state.saved.length === 1 ? " line" : " lines") + " saved. Both clear on " +
-    nextMonthFirst.toLocaleDateString("en-US", { month: "long", day: "numeric" }) + ".";
-  const storageMonth = now.toLocaleDateString("en-US", { month: "short" }).toUpperCase();
 
   return (
     <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
@@ -63,28 +55,13 @@ export default function Mood({ bud, theme }) {
 
       <div
         onClick={editName}
-        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10, cursor: "pointer", transition: "opacity .16s ease", boxShadow: theme.cardShadow }}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", cursor: "pointer", transition: "opacity .16s ease", boxShadow: theme.cardShadow }}
       >
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
           <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, lineHeight: 1.2, overflowWrap: "anywhere" }}>Bud calls you {name}</div>
           <div style={{ fontSize: 13, fontWeight: 400, opacity: 0.6, lineHeight: 1.2 }}>Change your name</div>
         </div>
         <div style={{ flex: "none", fontSize: 11, fontWeight: 600, opacity: 0.45 }}>EDIT</div>
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, background: theme.card, color: theme.cardInk, borderRadius: 24, padding: "16px 20px", marginBottom: 10, boxShadow: theme.cardShadow }}>
-        <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
-          <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.5, lineHeight: 1.2 }}>Kept this month</div>
-          <div style={{ fontSize: 13, fontWeight: 400, opacity: 0.6, lineHeight: 1.3 }}>{storageNote}</div>
-        </div>
-        <div style={{ flex: "none", fontSize: 11, fontWeight: 600, opacity: 0.45 }}>{storageMonth}</div>
-      </div>
-
-      <div
-        onClick={replayIntro}
-        style={{ textAlign: "center", padding: 16, borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "opacity .16s ease" }}
-      >
-        Replay the intro
       </div>
     </div>
   );
