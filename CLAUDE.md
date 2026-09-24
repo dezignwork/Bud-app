@@ -22,6 +22,20 @@ made.
 Two companion routines live beside it: `bounty.md` (report what past runs left undone) and
 `ship-bounty.md` (fix the items chosen from that report).
 
+## Skills vendored into this repo
+
+`.claude/skills/` carries the playbooks the routine depends on, so a session with no local
+skills folder still reads the real instructions instead of improvising them:
+
+- `impeccable/` — the critique, audit, polish, typeset, colorize, layout, clarify, harden,
+  animate and adapt playbooks. Its `scripts/` binary is deliberately absent; read
+  `README-VENDORED.md` for how to do the detector's job by hand.
+- `high-end-visual-design/` — the taste authority for this app's UI. Hold it for a whole
+  visual pass; never mix it with a second taste skill.
+
+Read the playbook a phase names before running that phase, the same way you would if the
+skill were installed.
+
 ## Verification in this repo
 
 `npm run qa` drives `qa/smoke.mjs`, a Playwright smoke test that uses real drags and taps
