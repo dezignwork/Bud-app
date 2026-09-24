@@ -47,9 +47,17 @@ across the run.
 - **Extend this script rather than writing a new one.** It is the project's QA harness.
 - Capture screenshots at 393×852 and 1100×900 and look at them yourself. Measurements catch
   numbers; eyes catch collisions and clipping.
-- It covers the localStorage path only. The repo carries no real Supabase project (only
-  `.env.example`), so cloud backup and sync stay untested. Say so rather than implying
-  coverage you do not have.
+`npm run qa:sync` drives `qa/sync.mjs`, which covers the cloud-backup path in `cloudSync.js`
+against a fake Supabase the script runs itself — no account, no keys, no network. It checks
+the device id survives a reload, that a change is pushed as the durable slice only, that a
+fresh install restores a backup instead of onboarding again, that a failed backup never eats
+local state, and that an empty cloud restores nothing. Both mutation-tested: breaking the
+push or the restore makes it fail.
+
+- Run both scripts. `qa` is the golden path; `qa:sync` is the data-loss path.
+- What stays uncovered: a real Supabase project. The stub speaks PostgREST faithfully enough
+  for this client, but it is not Supabase. Row-level security, schema drift and real network
+  behaviour are untested. Say so rather than implying coverage you do not have.
 
 ## House rules
 
