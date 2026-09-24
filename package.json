@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "qa": "node qa/smoke.mjs"
+    "qa": "node qa/smoke.mjs",
+    "qa:sync": "node qa/sync.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",

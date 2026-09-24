@@ -4,12 +4,20 @@ description: Design-and-ship routine, biased for speed: build, machine QA, two s
 
 Run the routine below for: $ARGUMENTS
 
-If `$ARGUMENTS` is empty, ask what is being built or improved, then continue. Everything else here you decide yourself — do not ask the user to pick tools, skills, or ordering.
+A bare project name — "Bud", "Snorkel" — is a valid target, not a missing one. It means **a full pass over that project**, and choosing what that pass covers is your job, not the user's. Derive it, in this order, and state the scope in one line before you start:
+
+1. `BACKLOG.md`, if it exists — take the highest-impact items still open.
+2. Gaps between the code and `DESIGN.md` / `PRODUCT.md` — drift, undocumented patterns, states that exist in the app but nowhere in the docs.
+3. Recent commits — what was rushed, what shipped without review.
+4. Your own read of the app — the worst thing about using it, found by using it.
+
+Ask what is being built only when there is genuinely nothing to go on: no backlog, no design system, no history. Everything else here you decide yourself — do not ask the user to pick tools, skills, or ordering.
 
 This routine is tuned so that time goes into work that finds real defects, and not into logistics. Two rules carry that intent:
 
 - **Never trade away the reviewers.** Phase 4 is where genuine defects surface. Scope it, never skip it.
 - **Never pay for logistics.** One deploy, one liveness check, one report. No per-fix pushes, no polling loops, no narration between phases.
+- **Run it as written.** If this session cannot invoke the routine as a slash command, read this file and follow it anyway. Never substitute a summarised or improvised version of it, and never drop a phase because a tool it names is absent — do that phase's real job with an equivalent and say which substitution you made.
 
 **Be honest about timing.** The first run on a project also has to write the Phase 3 QA script, so it lands around 45–60 minutes. Later runs reuse that script and land around 25. Say which one this is at the start rather than promising the faster number and delivering the slower one.
 
@@ -56,7 +64,7 @@ When the work is a new surface or a restyle:
 
 ## Phase 3 — Machine QA (one run)
 
-Write, or reuse, a committed QA script in the project (`scripts/qa.mjs`, `scripts/qa.py`, whatever fits the stack). It boots the app headless, seeds whatever identity or fixture state the app needs, walks every changed screen at the two target widths, and asserts:
+Write, or reuse, a committed QA script in the project (`scripts/qa.mjs`, `qa/smoke.mjs`, `scripts/qa.py`, whatever the project already has or the stack fits). Drive it with whatever this session actually has — a browser pane, Playwright, or headless Chrome from Bash. A missing tool is never a reason to skip the phase; do its job with the equivalent you have and name the substitution. It boots the app headless, seeds whatever identity or fixture state the app needs, walks every changed screen at the two target widths, and asserts:
 
 - horizontal overflow (`scrollWidth > clientWidth`)
 - interactive elements whose hit area, including `::after` expanders, is under 44×44
