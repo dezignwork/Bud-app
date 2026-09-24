@@ -4,7 +4,14 @@ description: Design-and-ship routine, biased for speed: build, machine QA, two s
 
 Run the routine below for: $ARGUMENTS
 
-If `$ARGUMENTS` is empty, ask what is being built or improved, then continue. Everything else here you decide yourself — do not ask the user to pick tools, skills, or ordering.
+A bare project name — "Bud", "Snorkel" — is a valid target, not a missing one. It means **a full pass over that project**, and choosing what that pass covers is your job, not the user's. Derive it, in this order, and state the scope in one line before you start:
+
+1. `BACKLOG.md`, if it exists — take the highest-impact items still open.
+2. Gaps between the code and `DESIGN.md` / `PRODUCT.md` — drift, undocumented patterns, states that exist in the app but nowhere in the docs.
+3. Recent commits — what was rushed, what shipped without review.
+4. Your own read of the app — the worst thing about using it, found by using it.
+
+Ask what is being built only when there is genuinely nothing to go on: no backlog, no design system, no history. Everything else here you decide yourself — do not ask the user to pick tools, skills, or ordering.
 
 This routine is tuned so that time goes into work that finds real defects, and not into logistics. Two rules carry that intent:
 
