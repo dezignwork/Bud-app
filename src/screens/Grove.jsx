@@ -30,7 +30,7 @@ export default function Grove({ bud, theme }) {
 
   return (
     <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
-      <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1, marginBottom: 22 }}>{name}’s grove</div>
+      <h1 style={{ margin: "0 0 22px", fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1 }}>{name}’s grove</h1>
 
       <div style={{ background: theme.card, borderRadius: 40, padding: "26px 24px", marginBottom: 18, boxShadow: theme.cardShadow }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>
@@ -51,10 +51,10 @@ export default function Grove({ bud, theme }) {
         </div>
       </div>
 
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
         <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0.6, opacity: 0.5 }}>LINES YOU KEPT</div>
-        <div onClick={toggleEditSaved} style={{ fontSize: 11, fontWeight: 600, opacity: 0.5, cursor: "pointer", transition: "opacity .16s ease" }}>
-          {state.editingSaved ? "DONE" : "EDIT"}
+        <div onClick={toggleEditSaved} style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", minWidth: 44, minHeight: 44, cursor: "pointer" }}>
+          <span style={{ fontSize: 11, fontWeight: 600, opacity: 0.5, transition: "opacity .16s ease" }}>{state.editingSaved ? "DONE" : "EDIT"}</span>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ export default function Grove({ bud, theme }) {
               {state.editingSaved && (
                 <div
                   onClick={() => removeSaved(line)}
-                  style={{ flex: "0 0 auto", width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", opacity: 0.4, transition: "opacity .16s ease, transform .16s ease" }}
+                  style={{ flex: "0 0 auto", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", opacity: 0.4, transition: "opacity .16s ease, transform .16s ease" }}
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
                     <path d="M2.5 4h11" /><path d="M6 4V2.6h4V4" /><path d="M3.8 4l.7 9.1a1 1 0 0 0 1 .9h5a1 1 0 0 0 1-.9L12.2 4" /><path d="M6.6 6.6v5M9.4 6.6v5" />

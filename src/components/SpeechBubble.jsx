@@ -47,7 +47,7 @@ export function PopBubble({ theme, title, body, tailSide = "top" }) {
         animation: "pop .3s ease both",
       }}
     >
-      <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: -1.2, lineHeight: 1.15 }}>{title}</div>
+      <h1 style={{ margin: 0, fontSize: 20, fontWeight: 700, letterSpacing: -1.2, lineHeight: 1.15 }}>{title}</h1>
       {body && <div style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.4, marginTop: 8, opacity: 0.72 }}>{body}</div>}
       <div
         style={{

@@ -6,7 +6,7 @@ export default function Mood({ bud, theme }) {
 
   return (
     <div style={{ flex: 1, padding: "0 28px 24px", overflowY: "auto", overflowX: "hidden", WebkitOverflowScrolling: "touch" }}>
-      <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1, marginBottom: 6 }}>How are you today?</div>
+      <h1 style={{ margin: "0 0 6px", fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.1 }}>How are you today?</h1>
       <div style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.25, opacity: 0.7, marginBottom: 20 }}>Pick a mood and your line changes to match.</div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 9, marginBottom: 30 }}>
@@ -17,7 +17,7 @@ export default function Mood({ bud, theme }) {
               key={m}
               onClick={() => pickMood(m)}
               style={{
-                padding: "12px 20px", borderRadius: 999, fontSize: 15, fontWeight: 400, cursor: "pointer",
+                padding: "13px 20px", borderRadius: 999, fontSize: 15, fontWeight: 400, cursor: "pointer",
                 background: active ? theme.chip : "transparent", color: active ? theme.chipInk : theme.ink,
                 boxShadow: active ? "none" : `inset 0 0 0 1px ${theme.ghostLine}`,
                 transition: "opacity .16s ease, transform .16s ease",

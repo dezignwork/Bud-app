@@ -46,7 +46,7 @@ export default function Meditation({ bud, theme }) {
       <div style={{ height: 400, display: "flex", flexDirection: "column", alignItems: "center" }}>
         {medIntro && (
           <div style={{ animation: "medRise .8s cubic-bezier(.22,1,.36,1) both" }}>
-            <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14, marginBottom: 22 }}>Meditation Mode</div>
+            <h1 style={{ margin: "0 0 22px", fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14 }}>Meditation Mode</h1>
             <div style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.45, opacity: 0.7, marginBottom: 34, textWrap: "pretty" }}>
               Let's try box breathing. Four seconds in, four to hold, four out, four to rest. Start when you're ready.
             </div>
@@ -61,23 +61,23 @@ export default function Meditation({ bud, theme }) {
 
         {medReadyOn && (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 56 }}>
-            <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14 }}>Ready?</div>
+            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14 }}>Ready?</h1>
             {circle(state.medReady, 0.8, "none")}
           </div>
         )}
 
         {medTitlePhase && (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 56 }}>
-            <div key={state.medPhase} style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14, animation: "medNum .8s cubic-bezier(.22,1,.36,1) both" }}>
+            <h1 key={state.medPhase} style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14, animation: "medNum .8s cubic-bezier(.22,1,.36,1) both" }}>
               {PHASE_LINES[state.medPhase]}
-            </div>
+            </h1>
             {circle(state.medN, medScale, medCircleAnim)}
           </div>
         )}
 
         {medOutro && (
           <div style={{ animation: "medRise .7s cubic-bezier(.22,1,.36,1) both" }}>
-            <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14, marginBottom: 26 }}>Hope that helps!</div>
+            <h1 style={{ margin: "0 0 26px", fontSize: 28, fontWeight: 700, letterSpacing: -1.68, lineHeight: 1.14 }}>Hope that helps!</h1>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "stretch" }}>
               <div
                 onClick={beginMed}
@@ -107,7 +107,7 @@ export default function Meditation({ bud, theme }) {
         </div>
         <div
           onClick={endMed}
-          style={{ padding: "11px 22px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
+          style={{ padding: "14px 22px", borderRadius: 999, boxShadow: `inset 0 0 0 1px ${theme.ghostLine}`, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease, transform .16s ease" }}
         >
           End early
         </div>

@@ -113,7 +113,7 @@ export default function Today({ bud, theme }) {
       )}
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", paddingBottom: gapTighten, transform: `translateY(${state.pull}px)`, transition: state.dragging ? "none" : "transform .32s cubic-bezier(.34,1.4,.64,1)", minHeight: 0 }}>
-        <div style={{ fontSize: 38, fontWeight: 700, letterSpacing: -2.28, lineHeight: 1.06, textWrap: "pretty" }}>{line}</div>
+        <h1 style={{ margin: 0, fontSize: 38, fontWeight: 700, letterSpacing: -2.28, lineHeight: 1.06, textWrap: "pretty" }}>{line}</h1>
 
         <div style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", minHeight: 0 }}>
           {/* Centered in the gap between the quote and the shelf specifically

@@ -174,6 +174,47 @@ Today's content), lock onto one axis after a small deadzone
 (`Math.abs(dx) > 8 || Math.abs(dy) > 8`, then compare magnitudes) rather
 than trying to support both at once.
 
+**Respecting `prefers-reduced-motion`**: any continuous, unconditional idle
+loop (Bud's breathe/sway/leafbob/blink) reads `usePrefersReducedMotion()`
+(`src/usePrefersReducedMotion.js`) and swaps its `animation` to `"none"` when
+the setting is on. Brief, action-triggered animations (save-fly, watering,
+screen transitions, gesture snap-backs) are left alone — motion sensitivity
+is about things that loop forever in the background, not a one-shot response
+to something the user just did. If an element needs a `delay` alongside a
+conditional `animation`, fold the delay into the shorthand string itself
+(`` `leafbob 4.2s ease-in-out ${delay}s infinite` ``) rather than a separate
+`animationDelay` property — mixing a shorthand and a longhand for the same
+CSS property on one element causes a React dev warning and can leave the
+longhand desynced after a live toggle.
+
+## Touch targets
+
+Every tappable element should measure at least 44×44 CSS px (WCAG 2.5.5 /
+iOS HIG), even when its visible design is smaller (an EDIT label, a small
+delete icon, a compact pill). Prefer growing the visible element itself when
+that reads fine at the larger size (e.g. Journal's Ploon Mode pill, Clear/
+Save buttons). When growing the visible element would look wrong (e.g. it
+would visually outweigh the content next to it, like the streak badge or an
+EDIT/DONE label), wrap it in an invisible centered hit area instead:
+
+```jsx
+<div style={{ display: "flex", alignItems: "center", justifyContent: "center", minWidth: 44, minHeight: 44, cursor: "pointer" }}>
+  <span>{/* unchanged, small, visible element */}</span>
+</div>
+```
+
+Two things to get right with this wrapper:
+- Match `justifyContent` to how the original element was aligned in its row
+  (`flex-end` for something that was flush-right, not `center`) — recentering
+  it inside the wrapper shifts the visible text/icon off its original
+  position.
+- If the wrapper sits inside a flex row alongside fixed-height siblings, its
+  own `minHeight: 44` can grow that row's total height even though nothing
+  visible changed. Cancel it with a negative vertical margin sized to the
+  difference (e.g. `margin: "-7px 0"` for a 44px wrapper around a ~30px-tall
+  visible pill) so the wrapper still paints and receives taps at the full
+  44px without pushing the rest of the layout down.
+
 ## Components (`src/components/`)
 
 - **`TabBar`** — top nav (lives under the date/streak row, not pinned to the

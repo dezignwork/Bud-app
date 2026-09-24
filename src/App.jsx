@@ -120,12 +120,23 @@ export default function App() {
             <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: -0.4 }}>
               {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </div>
+            {/* The visible pill stays its original compact size — only the
+                tappable area grows to 44px tall, via an invisible centered
+                wrapper, rather than inflating the badge itself. The negative
+                vertical margin cancels the wrapper's own extra height back
+                out of the header row's flow, so the header doesn't grow
+                taller (and push every screen's content down) just because
+                this one control's hit area did — the wrapper still paints
+                at the full 44px for tap purposes, it just doesn't reserve
+                that much space in layout. */}
             <div
               onClick={() => goScreen("grove")}
-              style={{ display: "flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: theme.chip, color: theme.chipInk, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, cursor: "pointer", transition: "opacity .16s ease" }}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 44, minWidth: 44, margin: "-7px 0", cursor: "pointer" }}
             >
-              <span style={{ flex: "none", width: 8, height: 8, borderRadius: "100% 0 100% 0", background: "currentColor" }} />
-              <span style={{ whiteSpace: "nowrap" }}>{state.streak} days</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: theme.chip, color: theme.chipInk, fontSize: 13, fontWeight: 600, letterSpacing: -0.3, transition: "opacity .16s ease" }}>
+                <span style={{ flex: "none", width: 8, height: 8, borderRadius: "100% 0 100% 0", background: "currentColor" }} />
+                <span style={{ whiteSpace: "nowrap" }}>{state.streak} day{state.streak === 1 ? "" : "s"}</span>
+              </div>
             </div>
           </div>
 

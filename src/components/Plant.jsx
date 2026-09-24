@@ -1,5 +1,6 @@
 import { POT_SHAPES } from "../data";
 import { plantGrowth } from "../plantGrowth";
+import usePrefersReducedMotion from "../usePrefersReducedMotion";
 
 // Pot body/rim dimensions for a given shape + size, shared by Plant itself
 // and by any screen (e.g. Today.jsx) that needs to know where the stem
@@ -24,6 +25,12 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
   const P = POT_SHAPES[potShape] || POT_SHAPES.taper;
   const { leaves, stemH } = plantGrowth(streak);
   const large = size === "large";
+  // The whole-body/stem/leaf/blink idle loop is continuous and unconditional
+  // for as long as Bud is on screen — exactly the kind of motion
+  // prefers-reduced-motion exists for, unlike the app's other animations
+  // (save-fly, watering, screen transitions), which are brief and tied to a
+  // specific user action rather than looping forever in the background.
+  const reduceMotion = usePrefersReducedMotion();
 
   const boxW = large ? 210 : 150;
   const leafW = large ? 52 : 38;
@@ -53,7 +60,7 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
         transition: "transform .18s cubic-bezier(.34,1.56,.64,1)",
       }}
     >
-      <div style={{ animation: scene === "shelf" ? "rooted 5.5s ease-in-out infinite" : "breathe 5.5s ease-in-out infinite" }}>
+      <div style={{ animation: reduceMotion ? "none" : scene === "shelf" ? "rooted 5.5s ease-in-out infinite" : "breathe 5.5s ease-in-out infinite" }}>
         <div
           style={{
             width: boxW,
@@ -69,7 +76,7 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
               position: "absolute", left: "50%", bottom: stemBottom,
               width: large ? 7 : 6, height: stemHeight, marginLeft: large ? -3.5 : -3,
               borderRadius: 4, background: theme.leaf,
-              transformOrigin: "bottom center", animation: "sway 5s ease-in-out infinite",
+              transformOrigin: "bottom center", animation: reduceMotion ? "none" : "sway 5s ease-in-out infinite",
             }}
           />
           {/* leaves */}
@@ -86,7 +93,14 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
                 style={{
                   width: leafW, height: leafH, background: theme.leaf,
                   borderRadius: "100% 0 100% 0", transformOrigin: "left center",
-                  animation: "leafbob 4.2s ease-in-out infinite", animationDelay: `${lf.delay}s`,
+                  // The delay is folded into the shorthand rather than set as
+                  // a separate animationDelay property — mixing the two on
+                  // the same element makes React warn about "a conflicting
+                  // property" on every re-render, and on a live
+                  // prefers-reduced-motion toggle the delay actually stuck at
+                  // its last value instead of updating, desyncing the leaves'
+                  // stagger until the component remounted.
+                  animation: reduceMotion ? "none" : `leafbob 4.2s ease-in-out ${lf.delay}s infinite`,
                 }}
               />
             </div>
@@ -116,8 +130,8 @@ export default function Plant({ theme, potShape, streak, size = "large", squish 
               marginLeft: -eyeRowW / 2, display: "flex", justifyContent: "space-between",
             }}
           >
-            <div style={{ width: eyeW, height: eyeH, borderRadius: 5, background: theme.potInk, animation: "blink 6s infinite" }} />
-            <div style={{ width: eyeW, height: eyeH, borderRadius: 5, background: theme.potInk, animation: "blink 6.4s infinite" }} />
+            <div style={{ width: eyeW, height: eyeH, borderRadius: 5, background: theme.potInk, animation: reduceMotion ? "none" : "blink 6s infinite" }} />
+            <div style={{ width: eyeW, height: eyeH, borderRadius: 5, background: theme.potInk, animation: reduceMotion ? "none" : "blink 6.4s infinite" }} />
           </div>
           {/* mouth */}
           <div

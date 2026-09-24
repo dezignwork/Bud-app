@@ -43,7 +43,7 @@ export default function Onboarding({ bud, theme, dailyCheckIn = false }) {
                 key={m}
                 onClick={() => pickMood(m)}
                 style={{
-                  padding: "10px 18px", borderRadius: 999, fontSize: 15, fontWeight: 400, cursor: "pointer",
+                  padding: "13px 18px", borderRadius: 999, fontSize: 15, fontWeight: 400, cursor: "pointer",
                   background: active ? theme.chip : "transparent", color: active ? theme.chipInk : theme.ink,
                   transition: "opacity .16s ease",
                 }}

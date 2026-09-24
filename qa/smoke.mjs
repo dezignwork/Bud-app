@@ -25,10 +25,18 @@ import { spawn } from "node:child_process";
 import { mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { checkOverflow, checkHitAreas, checkContrast, checkStructure } from "./lib/audit.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, "output");
 mkdirSync(OUT_DIR, { recursive: true });
+
+// The two target widths the Phase 3 audit walks every screen at: a narrow
+// phone (iPhone SE-class) and a wide one (Pro Max-class) — both comfortably
+// inside the app's own maxWidth:480 ceiling (src/App.jsx), so this brackets
+// the real range of devices this PWA runs on without testing tablet/desktop
+// widths the app was never designed for.
+const AUDIT_WIDTHS = [375, 430];
 
 const PORT = 5173;
 const BASE_URL = process.env.QA_BASE_URL || `http://localhost:${PORT}`;
@@ -135,7 +143,7 @@ async function main() {
   const shot = (name) => page.screenshot({ path: path.join(OUT_DIR, `${name}.png`) });
   const quoteText = () =>
     page.evaluate(() => {
-      const els = [...document.querySelectorAll("div")];
+      const els = [...document.querySelectorAll("div, h1")];
       const q = els.find((d) => getComputedStyle(d).fontSize === "38px");
       return q ? q.textContent : null;
     });
@@ -165,8 +173,8 @@ async function main() {
     for (const label of ["Today", "Grove", "Journal", "Mood"]) {
       await page.getByText(label, { exact: true }).waitFor();
     }
-    const streak = await page.evaluate(() => document.body.textContent.match(/\d+ days/));
-    assert(streak, "expected an 'N days' streak badge");
+    const streak = await page.evaluate(() => document.body.textContent.match(/\d+ days?(?![a-z])/));
+    assert(streak, "expected an 'N day(s)' streak badge");
   });
 
   // ---- Today: line-selection mechanics -----------------------------------
@@ -334,6 +342,46 @@ async function main() {
     assert(!stillMeditating, "expected Meditation to be closed after End early");
   });
 
+  // ---- Phase 3 audit: overflow / hit-area / contrast / structure, at two
+  // widths, across every screen this pass touched --------------------------
+  // Overflow and hit-area are unambiguous, cheap-to-fix defects, so they
+  // fail the run. Contrast and structure findings are collected and
+  // reported instead of failing outright — a first sweep of an app that
+  // was never audited against these can turn up a long tail of pre-existing
+  // findings unrelated to this pass, and triaging that tail (fix now vs.
+  // BACKLOG.md) is exactly Phase 4/5's job, not this script's.
+  const auditFindings = []; // { width, screen, kind, items }
+  await check("Phase 3 audit: overflow, hit-area, contrast, structure across screens/widths", async () => {
+    const screensToVisit = [
+      { name: "Today", go: () => page.getByText("Today", { exact: true }).click() },
+      { name: "Grove", go: () => page.getByText("Grove", { exact: true }).click() },
+      { name: "Journal", go: () => page.getByText("Journal", { exact: true }).click() },
+      { name: "Mood", go: () => page.getByText("Mood", { exact: true }).click() },
+    ];
+    for (const width of AUDIT_WIDTHS) {
+      await page.setViewportSize({ width, height: 844 });
+      for (const screen of screensToVisit) {
+        await screen.go();
+        await page.waitForTimeout(250);
+        const overflow = await checkOverflow(page);
+        const hitAreas = await checkHitAreas(page);
+        const contrast = await checkContrast(page);
+        const structure = await checkStructure(page);
+        if (overflow.length) auditFindings.push({ width, screen: screen.name, kind: "overflow", items: overflow });
+        if (hitAreas.length) auditFindings.push({ width, screen: screen.name, kind: "hit-area", items: hitAreas });
+        if (contrast.length) auditFindings.push({ width, screen: screen.name, kind: "contrast", items: contrast });
+        if (structure.length) auditFindings.push({ width, screen: screen.name, kind: "structure", items: structure });
+        await shot(`audit-${width}w-${screen.name.toLowerCase()}`);
+      }
+    }
+    await page.setViewportSize({ width: 390, height: 844 }); // restore iPhone 13's own size for anything after
+    const blocking = auditFindings.filter((f) => f.kind === "overflow" || f.kind === "hit-area");
+    if (blocking.length) {
+      const lines = blocking.map((f) => `[${f.width}w ${f.screen} ${f.kind}] ${f.items.join("; ")}`);
+      throw new Error(`${blocking.length} blocking finding(s):\n      ${lines.join("\n      ")}`);
+    }
+  });
+
   // ---- report -------------------------------------------------------------
   const failed = results.filter((r) => !r.ok);
   console.log(`\n${results.length - failed.length}/${results.length} checks passed.`);
@@ -344,6 +392,12 @@ async function main() {
   if (failed.length) {
     console.log("\nFailed checks:");
     failed.forEach((r) => console.log(`  - ${r.name}: ${r.err.message}`));
+  }
+
+  const nonBlocking = auditFindings.filter((f) => f.kind === "contrast" || f.kind === "structure");
+  if (nonBlocking.length) {
+    console.log(`\n${nonBlocking.length} non-blocking audit finding(s) (contrast/structure) — see qa/output/audit-*.png, triage into fixes or BACKLOG.md:`);
+    nonBlocking.forEach((f) => console.log(`  - [${f.width}w ${f.screen} ${f.kind}] ${f.items.slice(0, 3).join("; ")}${f.items.length > 3 ? ` (+${f.items.length - 3} more)` : ""}`));
   }
 
   if (failed.length && KEEP_OPEN) {
